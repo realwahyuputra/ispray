@@ -103,7 +103,7 @@ import React, { useState, useEffect } from 'react';
 
       return (
         <div className="articles-section">
-          <h2 className="text-xl font-semibold mb-4 px-4">Artikel Terbaru</h2>
+          <h2 className="text-xl font-semibold mb-4 px-4">Jadwal Kajian</h2>
           <div className="articles-list">
             {articles.length > 0 ? (
               articles.map((article, index) => (
@@ -118,7 +118,7 @@ import React, { useState, useEffect } from 'react';
                         src={article.thumbnail}
                         alt={article.title}
                         onError={(e) => {
-                          e.target.src = 'https://bimbinganislam.com/wp-content/uploads/2016/09/logo-bi-300x300.png';
+                          e.target.src = 'https://placehold.co/600x600?font=montserrat&text=Info+Kajian';
                         }}
                       />
                       <div className="article-overlay">
@@ -146,14 +146,16 @@ import React, { useState, useEffect } from 'react';
           {/* Article Dialog */}
           {selectedArticle && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center">
-              <div className="bg-white rounded-lg w-full max-w-2xl p-6 relative" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                <button
-                  onClick={closeArticleDialog}
-                  className="absolute top-2 right-2 p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <X size={24} className="text-gray-600" />
-                </button>
-                <h2 className="text-2xl font-semibold mb-4">{selectedArticle.title}</h2>
+              <div className="bg-white rounded-lg w-full max-w-2xl p-6 pt-0 relative" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+                <div className="sticky top-0 bg-white z-10 flex justify-between items-center mb-4 py-2 px-2">
+                  <h2 className="text-xl font-semibold">{selectedArticle.title}</h2>
+                  <button
+                    onClick={closeArticleDialog}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X size={24} className="text-gray-600" />
+                  </button>
+                </div>
                 {selectedArticle.thumbnail && (
                   <img
                     src={selectedArticle.thumbnail}
