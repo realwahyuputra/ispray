@@ -41,8 +41,6 @@ import React, { useState, useEffect } from 'react';
 				      
 				      const description = item.querySelector('description')?.textContent || '';
 				
-				      console.log('Media content URL:', mediaContent?.getAttribute('url'));
-				
 				      const article = {
 				        title: item.querySelector('title')?.textContent || '',
 				        link: item.querySelector('link')?.textContent || '',
