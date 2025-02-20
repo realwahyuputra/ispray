@@ -144,7 +144,7 @@ import React, { useState, useEffect, useRef } from 'react';
                   zIndex: 10001,
                 }}
               >
-                X
+                ✕
               </button>
               <ReactPlayer
                 url={playingUrl}
@@ -161,6 +161,8 @@ import React, { useState, useEffect, useRef } from 'react';
                     transform: 'rotate(90deg)',
                     width: '100vh',
                     height: '100vw',
+										top: 'auto',
+										left: 'auto',
                     transformOrigin: 'center',
                   }),
                 }}

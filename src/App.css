@@ -10,21 +10,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Webkit Scrollbar Styling */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: theme('colors.ios-system-gray');
-      border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background-color: theme('colors.ios-system');
-    }
-
     .app-container {
       max-width: 600px;
       margin: 0 auto;
@@ -253,7 +238,7 @@
       background-color: theme('colors.ios-secondary-system');
       border-radius: 12px;
       padding: 0px 12px;
-      margin: 12px 16px;
+      margin: 16px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
