@@ -9,9 +9,12 @@ import React, { useState, useEffect, useRef } from 'react';
       const [selectedDay, setSelectedDay] = useState(new Date());
       const [gregorianDate, setGregorianDate] = useState(new Date());
       const [hijriDate, setHijriDate] = useState(null);
-      const [loading, setLoading] = useState(false);
+      const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
-      const [hijriMonth, setHijriMonth] = useState(null);
+      const [hijriMonth, setHijriMonth] = useState(() => {
+        const today = uq();
+        return today.hm; // Set initial month to current Hijri month
+      });
       const [hijriYear, setHijriYear] = useState(null);
       const [calendarDays, setCalendarDays] = useState([]);
       const [firstDayOfWeek, setFirstDayOfWeek] = useState(0);
@@ -24,13 +27,12 @@ import React, { useState, useEffect, useRef } from 'react';
 
       const hijriMonthNames = [
         "Muharram", "Safar", "Rabi'ul Awal", "Rabi'ul Akhir",
-        "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sha'ban",
-        "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
+        "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban",
+        "Ramadan", "Shawwal", "Dhu al-Qidah", "Dhu al-Hijjah"
       ];
 
       useEffect(() => {
         const today = uq();
-        setHijriMonth(today.hm + 1); // Adjust month to be 1-indexed
         setHijriYear(today.hy);
       }, []);
 
@@ -58,12 +60,6 @@ import React, { useState, useEffect, useRef } from 'react';
       };
 
       useEffect(() => {
-        const offsetDate = new Date();
-        offsetDate.setDate(new Date().getDate() - hijriDateOffset);
-        setSelectedDay(offsetDate);
-      }, [hijriDateOffset]);
-
-      useEffect(() => {
         setGregorianDate(new Date());
         if (selectedDay) {
           fetchHijriDate(selectedDay);
@@ -76,7 +72,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
       const generateCalendar = (month, year, offset) => {
         const calendar = [];
-        let umalquraDate = uq(year, month - 1, 1); // Month is 0-indexed in umalqura
+        let umalquraDate = uq(year, month, 1); // Month is 1-indexed in uq
 
         // Apply offset to the first day of the month
         let gregorianFirstDay = new Date(umalquraDate.date);
@@ -99,7 +95,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
         // Add the days of the month
         for (let i = 1; i <= daysInMonth; i++) {
-          const dayDate = uq(year, month - 1, i);
+          const dayDate = uq(year, month, i);
           let gregorianDayDate = new Date(dayDate.date);
           gregorianDayDate.setDate(gregorianDayDate.getDate() + offset);
 
@@ -113,6 +109,8 @@ import React, { useState, useEffect, useRef } from 'react';
           calendar.push({
             date: offsetDayDate.date,
             hijriDay: i,
+            hijriMonth: offsetDayDate.hm + 1,
+            hijriYear: offsetDayDate.hy
           });
         }
 
@@ -192,7 +190,7 @@ import React, { useState, useEffect, useRef } from 'react';
             <button onClick={goToPreviousMonth} className="p-2 rounded-full hover:bg-gray-100">
               <ChevronLeft size={20} />
             </button>
-            <span>{hijriMonthNames[hijriMonth - 2]} {hijriYear}</span>
+            <span>{hijriMonthNames[hijriMonth - 1]} {hijriYear}</span>
             <button onClick={goToNextMonth} className="p-2 rounded-full hover:bg-gray-100">
               <ChevronRight size={20} />
             </button>
@@ -208,10 +206,13 @@ import React, { useState, useEffect, useRef } from 'react';
             {calendarDays.map((day, index) => {
               const isToday = day && day.date.toDateString() === new Date().toDateString();
               const isAyyamulBidh = day && [13, 14, 15].includes(day.hijriDay);
+              const is1Shawwal = day && day.hijriMonth === 10+1 && day.hijriDay === 1; // Check for 1 Shawwal
+              const is10DhuAlHijjah = day && day.hijriMonth === 12+1 && day.hijriDay === 10; // Check for 10 Dhu Al-Hijjah
+
               return (
                 <button
                   key={index}
-                  className={`p-2 text-center rounded-full ${day ? 'text-gray-800' : 'text-gray-400'} ${isToday ? 'bg-blue-100 text-blue-800 font-bold' : ''} ${isAyyamulBidh ? 'bg-green-100 text-green-800 font-bold' : 'bg-gray-100 hover:bg-gray-200'} flex-1`}
+                  className={`p-2 text-center rounded-full ${day ? 'text-gray-800' : 'text-gray-400'} ${isToday ? 'bg-blue-100 text-blue-800 font-bold' : ''} ${isAyyamulBidh ? 'bg-green-100 text-green-800 font-bold' : ''} ${is1Shawwal ? 'bg-yellow-200 text-yellow-800 font-bold' : ''} ${is10DhuAlHijjah ? 'bg-yellow-200 text-yellow-800 font-bold' : ''} flex-1`} // Apply yellow marker
                   onClick={() => {
                     if (day) {
                       handleDayClick(day.date);
@@ -236,6 +237,16 @@ import React, { useState, useEffect, useRef } from 'react';
               <legend className="text-sm text-gray-500 flex items-center">
                 <span className="bg-green-100 text-green-800 font-bold rounded-full px-1 mr-1">13, 14, 15</span>: Ayyamul Bidh
               </legend>
+              {hijriMonth === 10 && ( // Conditionally render 1 Shawwal legend
+                <legend className="text-sm text-gray-500 flex items-center">
+                  <span className="bg-yellow-200 text-yellow-800 font-bold rounded-full px-1 mr-1">1</span>: Idul Fithri
+                </legend>
+              )}
+              {hijriMonth === 12 && ( // Conditionally render 10 Dhu Al-Hijjah legend
+                <legend className="text-sm text-gray-500 flex items-center">
+                  <span className="bg-yellow-200 text-yellow-800 font-bold rounded-full px-1 mr-1">10</span>: Idul Adha
+                </legend>
+              )}
             </div>
           )}
           {/* Settings Dialog */}

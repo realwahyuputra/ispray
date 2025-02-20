@@ -259,8 +259,8 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
       const navItems = [
         { icon: <HomeIcon size={24} />, label: 'Home', tab: 'home' },
         { icon: <Compass size={24} />, label: 'Qibla', tab: 'qibla' }, // Replaced Market with Qibla and Compass icon
-        { icon: <Video size={24} />, label: 'Live', tab: 'live' }, // Replaced Assets with Live and Video icon
         { icon: <Book size={24} />, label: 'Quran', tab: 'quran' }, // Add Quran tab
+        { icon: <Video size={24} />, label: 'Live', tab: 'live' }, // Replaced Assets with Live and Video icon
         { icon: <Calendar size={24} />, label: 'Hijri', tab: 'hijri' } // Add Hijri tab
       ];
 
@@ -485,11 +485,13 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
                             />
                           </form>
 
-                          <Link to="/hijri" className="date-selector">
+                          <div className="date-selector">
                             <ChevronLeft size={24} className="arrow" onClick={goToPreviousDay} style={{ cursor: 'pointer' }} />
-                            <span className="date">{hijriDate ? hijriDate : 'Loading...'}</span>
+														<Link to="/hijri">
+                            	<span className="date">{hijriDate ? hijriDate : 'Loading...'}</span>
+                          	</Link>
                             <ChevronRight size={24} className="arrow" onClick={goToNextDay} style={{ cursor: 'pointer' }} />
-                          </Link>
+                          </div>
                         </div>
 
                         <div className="prayer-list">
@@ -555,7 +557,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 
                         <div className="welcome-banner">
                           <div className="mosque-icon">🕌</div>
-                          <span className="welcome-text">Selamat datang di AkuMuslim</span>
+                          <span className="welcome-text">Selamat datang di Aplikasi MPS</span>
                         </div>
                         <Articles />
                       </div>
@@ -586,7 +588,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
             <nav className="bottom-nav">
               {navItems.map((item, index) => (
                 <Link
-                  to={item.tab === 'home' ? '/' : item.tab === 'quran' ? '/quran' : item.tab === 'qibla' ? '/qibla' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
+                  to={item.tab === 'home' ? '/' : item.tab === 'qibla' ? '/qibla' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
                   className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
                   key={index}
                   onClick={() => handleTabChange(item.tab)}

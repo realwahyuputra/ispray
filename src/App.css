@@ -106,7 +106,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
+      padding: 0px;
       position: relative;
       z-index: 10;
     }
@@ -157,7 +157,7 @@
       padding: 10px 12px;
       display: flex;
       align-items: center;
-      margin: 12px 16px;
+      margin: 12px 0px;
       border: none;
       justify-content: space-between;
       position: relative;
@@ -187,7 +187,7 @@
     /* Current Prayer Styles */
     .current-prayer {
       text-align: center;
-      margin: 12px 16px;
+      margin: 12px 0px;
       padding: 20px;
       background-color: theme('colors.ios-secondary-system');
       border-radius: 12px;
@@ -197,7 +197,7 @@
     }
 
     .prayer-name {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       margin-bottom: 0px;
     }
@@ -230,7 +230,7 @@
       background-color: theme('colors.ios-secondary-system');
       padding: 12px;
       border-radius: 12px;
-      margin: 12px 16px;
+      margin: 12px 0px;
       font-size: 15px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       color: theme('colors.ios-label');
@@ -252,7 +252,7 @@
     .prayer-list {
       background-color: theme('colors.ios-secondary-system');
       border-radius: 12px;
-      padding: 8px 12px;
+      padding: 0px 12px;
       margin: 12px 16px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
@@ -261,7 +261,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 0;
+      padding: 10px 0;
       border-bottom: 1px solid theme('colors.ios-separator');
     }
 
@@ -304,6 +304,7 @@
       cursor: pointer;
       position: relative;
       background-color: theme('colors.ios-secondary-system');
+			margin-top: 5px;
     }
 
     .custom-checkbox:checked {
@@ -382,7 +383,7 @@
     .bottom-nav {
       display: flex;
       justify-content: space-around;
-      padding: 12px 18px;
+      padding: 8px 6px;
       background-color: theme('colors.ios-secondary-system');
       border-radius: 20px;
       position: fixed;
