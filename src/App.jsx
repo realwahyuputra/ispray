@@ -466,6 +466,20 @@ searchResultsRef.current.innerHTML = '';
 };
 }, [searchQuery]);
 
+useEffect(() => {
+  const setPlaceholder = () => {
+    const searchInput = document.querySelector('input.gsc-input');
+    if (searchInput) {
+      searchInput.setAttribute('placeholder', 'Apa yang ingin antum cari?');
+    } else {
+      setTimeout(setPlaceholder, 500);
+    }
+  };
+
+  // Call setPlaceholder after the component mounts and after the CSE script loads
+  setTimeout(setPlaceholder, 500);
+}, []);
+
 return (
 <Router>
 <div className="app-container">
@@ -502,7 +516,7 @@ onClick={() => setIsCitySelectorOpen(true)}
 </div>
 </div>
 
-<div className="current-prayer">
+<div className={`current-prayer ${skyPhase === 'dawn' || skyPhase === 'noon' ? 'text-black' : 'text-white'}`}>
 {loading ? (
 <div className="flex items-center justify-center p-8">
 <Loader className="animate-spin" size={30} />
@@ -522,7 +536,7 @@ Matahari terbit dalam {timeRemaining}
 ) : (
 timeRemaining !== null && (
 <div className="next-prayer">
-Waktu shalat berikutnya dalam {timeRemaining}
+Waktu shalat berikutnya {timeRemaining} lagi
 </div>
 )
 )}

@@ -150,12 +150,12 @@ import React, { useState, useEffect, useRef } from 'react';
                 url={playingUrl}
                 playing={true}
                 controls={false} // Hide controls
-                width="100%"
-                height="100%"
                 style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
+									width: '100%',
+									height: '100%',
                   zIndex: 1001, // Ensure it's above the bottom nav
                   ...(window.innerWidth <= 600 && { // Apply landscape for mobile
                     transform: 'rotate(90deg)',

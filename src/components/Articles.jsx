@@ -144,7 +144,7 @@ import React, { useState, useEffect } from 'react';
           {/* Article Dialog */}
           {selectedArticle && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center">
-              <div className="bg-white rounded-lg w-full max-w-2xl p-6 pt-0 relative" style={{ maxHeight: '80vh', maxWidth: '80%', overflowY: 'auto' }}>
+              <div className="bg-white rounded-lg w-full max-w-2xl p-6 pt-0 relative" style={{ maxHeight: '90vh', maxWidth: '90%', overflowY: 'auto' }}>
                 <div className="sticky top-0 bg-white z-10 flex justify-between items-center mb-4 -mx-6 py-2 px-6">
                   <h2 className="text-sm md:text-xl font-semibold">{selectedArticle.title}</h2>
                   <button
