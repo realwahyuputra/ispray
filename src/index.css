@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
---primary-color: #00875A;
---secondary-color: #006C4C;
---accent-color: #2563eb;
+--primary-color: #aa6ab8;
+--secondary-color: #8e44ad;
+--accent-color: #aa6ab8;
 --bottom-nav-bg: #FFFFFF;
 --inactive-icon: #9CA3AF;
 }
@@ -128,6 +128,7 @@ color: white;
 /* Quran Screen Styles */
 .quran-screen {
 padding: 16px;
+margin-top: 65px;	
 }
 
 .quran-screen-header {
@@ -155,7 +156,7 @@ outline: none;
 
 .search-icon {
 opacity: 0.7;
-color: #007aff;
+color: #aa6ab8;
 }
 
 .surah-list {
@@ -518,6 +519,7 @@ margin-bottom: auto;
 background-color: #f9f9f9;
 border-radius: 12px;
 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+margin-top: 80px;	
 }
 
 .hijri-calendar-screen .grid-cols-7 {

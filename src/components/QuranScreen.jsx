@@ -48,25 +48,25 @@ import React, { useState, useEffect } from 'react';
 
         return (
           <div className="quran-screen">
-            <div className="quran-screen-header">
-              <div className="flex items-center justify-between">
-                <button onClick={handleBack} className="mr-4">
-                  <ChevronLeft size={24} />
-                </button>
+            <div className="surah-detail-header">
+              <button onClick={handleBack} className="back-button">
+                <ChevronLeft size={24} />
+              </button>
+              <div className="surah-info">
                 <h2 className="text-lg font-semibold text-center">Al Quran 30 Juz</h2>
-                <Link to="/bookmarked" className="mr-4">
-                  <Bookmark size={24} />
-                </Link>
               </div>
-              <div className="search-bar">
-                <Search size={20} className="search-icon" />
-                <input
-                  type="text"
-                  placeholder="Cari Surah..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-              </div>
+              <Link to="/bookmarked" className="mr-4">
+                <Bookmark size={24} />
+              </Link>
+            </div>
+            <div className="search-bar">
+              <Search size={20} className="search-icon" />
+              <input
+                type="text"
+                placeholder="Cari Surah..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
             </div>
             <ul className="surah-list">
               {filteredSurahList.map(surah => (

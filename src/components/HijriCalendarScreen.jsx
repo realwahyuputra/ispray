@@ -177,16 +177,18 @@ import React, { useState, useEffect, useRef } from 'react';
 
       return (
         <div className="hijri-calendar-screen p-4">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={handleBack} className="mr-4">
+          <div className="surah-detail-header">
+            <button onClick={handleBack} className="back-button">
               <ChevronLeft size={24} />
             </button>
-            <h2 className="text-lg font-semibold">Kalender Hijriyah</h2>
+            <div className="surah-info">
+              <h2 className="text-lg font-semibold">Kalender Hijriyah</h2>
+            </div>
             <button onClick={openSettings} className="p-2 rounded-full hover:bg-gray-100">
               <Settings size={20} />
             </button>
           </div>
-          <div className="flex items-center justify-between mb-2 w-full">
+          {/* <div className="flex items-center justify-between mb-2 w-full">
             <button onClick={goToPreviousMonth} className="p-2 rounded-full hover:bg-gray-100">
               <ChevronLeft size={20} />
             </button>
@@ -194,7 +196,7 @@ import React, { useState, useEffect, useRef } from 'react';
             <button onClick={goToNextMonth} className="p-2 rounded-full hover:bg-gray-100">
               <ChevronRight size={20} />
             </button>
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-7 gap-2">
             {/* Weekday headers */}

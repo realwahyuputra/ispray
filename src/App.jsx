@@ -260,7 +260,7 @@ const App = () => {
     { icon: <Compass size={24} />, label: 'Kiblat', tab: 'qibla' }, // Replaced Market with Qibla and Compass icon
     { icon: <Book size={24} />, label: 'Quran', tab: 'quran' }, // Add Quran tab
     { icon: <Video size={24} />, label: 'Live', tab: 'live' }, // Replaced Assets with Live and Video icon
-    { icon: <Calendar size={24} />, label: 'Hijriyah', tab: 'hijri' } // Add Hijri tab
+    { icon: <Calendar size={24} />, label: 'Hijri', tab: 'hijri' } // Add Hijri tab
   ];
 
   const getPrayerIcon = (iconName) => {
@@ -530,14 +530,14 @@ const App = () => {
                             <div className="prayer-time">
                               {formatPrayerTime(nextPrayer.time, timeFormat)}
                             </div>
-                            {nextPrayer.name === 'Sunrise' ? (
+                            {nextPrayer.name === 'Sunrise' || nextPrayer.name === 'Terbit' ? (
                               <div className="next-prayer">
                                 Matahari terbit dalam {timeRemaining}
                               </div>
                             ) : (
                               timeRemaining !== null && (
                                 <div className="next-prayer">
-                                  Shalat {nextPrayer.name} {timeRemaining} lagi
+                                  {nextPrayer.name} {timeRemaining} lagi
                                 </div>
                               )
                             )}

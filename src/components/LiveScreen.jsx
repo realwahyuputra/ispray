@@ -98,11 +98,13 @@ import React, { useState, useEffect, useRef } from 'react';
 
       return (
         <div className="quran-screen p-4">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={handleBack} className="p-2 rounded-full hover:bg-gray-100">
+          <div className="surah-detail-header">
+            <button onClick={handleBack} className="back-button">
               <ArrowLeft size={24} />
             </button>
-            <h2 className="text-lg font-semibold text-center">Live Dakwah</h2>
+            <div className="surah-info">
+              <h2 className="text-lg font-semibold text-center">Live Dakwah</h2>
+            </div>
             <button onClick={handleReload} className="p-2 rounded-full hover:bg-gray-100">
               {isReloading ? (
                 <Loader className="animate-spin" size={20} />
@@ -123,7 +125,7 @@ import React, { useState, useEffect, useRef } from 'react';
                   alt={channel.title}
                   className="w-full aspect-square object-cover rounded-md mb-2" // Changed height to create a square
                   onError={(e) => {
-                    e.target.src = 'https://placehold.co/320x180?font=montserrat&text=No+Image'; // Placeholder image
+                    e.target.src = 'https://placehold.co/320x320?font=montserrat&text=No+Image'; // Placeholder image
                   }}
                 />
                 <span className="text-sm font-medium text-gray-800 text-center">{channel.title}</span>
