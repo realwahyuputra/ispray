@@ -1,507 +1,554 @@
 @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-    :root {
-      --primary-color: #00875A;
-      --secondary-color: #006C4C;
-      --accent-color: #2563eb;
-      --bottom-nav-bg: #FFFFFF;
-      --inactive-icon: #9CA3AF;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    @keyframes slide-up {
-      from {
-        transform: translateY(100%);
-      }
-
-      to {
-        transform: translateY(0);
-      }
-    }
-
-    .animate-slide-up {
-      animation: slide-up 0.3s ease-out;
-    }
-
-    /* Safe Area Insets */
-    @supports (padding: max(0px)) {
-      .bottom-nav {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-        bottom: max(12px, env(safe-area-inset-bottom));
-      }
-
-      .app-container {
-        padding-bottom: max(120px, calc(120px + env(safe-area-inset-bottom)));
-      }
-    }
-
-    /* Bottom Nav Styles */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 12px 18px;
-      background-color: var(--bottom-nav-bg);
-      border-radius: 20px;
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 568px;
-      margin: 0 auto;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--inactive-icon);
-      cursor: pointer;
-      transition: color 0.2s ease;
-      font-size: 12px;
-      font-weight: 500;
-      position: relative;
-      /* For absolute positioning of the active indicator */
-      padding-top: 10px;
-      /* Add some padding to the top */
-    }
-
-    .nav-item .nav-icon {
-      margin-bottom: 5px;
-      position: relative;
-      /* For absolute positioning of the icon */
-      z-index: 1;
-      /* Ensure the icon is above the circle */
-    }
-
-    .nav-item .nav-label {
-      font-size: 12px;
-    }
-
-    /* Style for the active indicator */
-    .nav-item::before {
-      content: '';
-      position: absolute;
-      top: 5px;
-      /* Adjust the position of the indicator */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36px;
-      /* Increased width for the circle */
-      height: 36px;
-      /* Increased height for the circle */
-      background-color: transparent;
-      /* Initially transparent */
-      border-radius: 50%;
-      /* Make it a circle */
-      transition: background-color 0.2s ease;
-    }
-
-    /* Show the indicator only for the active item */
-    .nav-item.active::before {
-      background-color: var(--accent-color);
-      /* Color of the circle background */
-    }
-
-    /* Change icon color in active state */
-    .nav-item.active .nav-icon {
-      color: white;
-      /* White color for the active icon */
-    }
-
-    /* Quran Screen Styles */
-    .quran-screen {
-      padding: 16px;
-    }
-
-    .quran-screen-header {
-      margin-bottom: 16px;
-    }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background-color: #f2f2f7;
-      border-radius: 10px;
-      padding: 8px 12px;
-      margin-top: 8px;
-    }
-
-    .search-bar input {
-      background: transparent;
-      border: none;
-      color: #333;
-      width: 100%;
-      font-size: 16px;
-      margin-left: 8px;
-      outline: none;
-    }
-
-    .search-icon {
-      opacity: 0.7;
-      color: #007aff;
-    }
-
-    .surah-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .surah-item {
-      padding: 0;
-      margin-bottom: 12px;
-    }
-
-    .surah-card {
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .surah-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .surah-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .surah-name-arabic {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .surah-name-latin {
-      font-size: 14px;
-      color: #555;
-    }
-
-    .surah-details {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      color: #777;
-      font-size: 13px;
-    }
-
-    .surah-details-item {
-      margin-left: 12px;
-    }
-
-    .surah-category {
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .makkiyah {
-      background-color: #f0fdf4;
-      color: #16a34a;
-    }
-
-    .madaniyah {
-      background-color: #fde68a;
-      color: #ca8a04;
-    }
-
-    .surah-details-top {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 13px;
-      color: #777;
-    }
-
-    /* Surah Detail Styles */
-    .surah-detail {
-      padding: 16px;
-      padding-top: 70px;
-      /* Adjust padding to accommodate the fixed header */
-    }
-
-    .surah-detail-header {
-      display: flex;
-			align-items: center;
-			justify-content: space-between;
-			margin: 0 auto;
-			position: fixed;
-			background-color: #fff;
-			padding: 12px 16px;
-			z-index: 100;
-			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-			border-bottom: 1px solid #eee;
-			width: 100dvw;
-			margin-left: calc(50% - 50dvw);
-			top: 0;
-			left: 0;
-			overflow: hidden;
-    }
-
-    .back-button {
-      padding: 8px;
-      border-radius: 8px;
-      background-color: #f2f2f7;
-      transition: background-color 0.2s ease;
-    }
-
-    .back-button:hover {
-      background-color: #e0e0e0;
-    }
-
-    .surah-info {
-      text-align: center;
-    }
-
-    .surah-verses {
-      margin-top: 16px;
-    }
-
-    .verse-item {
-      margin-bottom: 24px;
-      text-align: right;
-      background-color: #f9f9f9;
-      padding: 16px;
-      border-radius: 12px;
-      position: relative;
-    }
-
-    .verse-arabic {
-      font-size: 28px;
-      /* Increased font size */
-      font-family: 'Scheherazade New', serif;
-      /* Use a proper Arabic font */
-      margin-bottom: 16px;
-      /* Add margin bottom */
-    }
-
-    .verse-latin {
-      font-size: 14px;
-      color: #444;
-    }
-
-    .verse-actions-inline {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-      /* Add margin to separate from verse text */
-    }
-
-    .play-button,
-    .bookmark-button,
-    .verse-translation-button {
-      background-color: #f0f0f0;
-      border-radius: 8px;
-      padding: 6px 8px;
-      /* Adjust padding for smaller buttons */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      /* Smaller font size */
-      margin-right: 4px;
-      /* Add margin between buttons */
-    }
-
-    .verse-translation-details {
-      margin-top: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .verse-translation-details:hover {
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .verse-translation-summary {
-      padding: 8px 12px;
-      background-color: #f0f0f0;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 500;
-      color: #333;
-      transition: background-color 0.2s ease;
-      font-size: 14px;
+:root {
+--primary-color: #00875A;
+--secondary-color: #006C4C;
+--accent-color: #2563eb;
+--bottom-nav-bg: #FFFFFF;
+--inactive-icon: #9CA3AF;
 }
 
-    .verse-translation-summary:hover {
-      background-color: #e0e0e0;
-    }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
 
-    .verse-translation-summary:focus {
-      outline: none;
-    }
+body {
+margin: 0;
+min-height: 100vh;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 
-    .verse-translation-content {
-      background: white;
-    }
+@keyframes slide-up {
+from {
+transform: translateY(100%);
+}
 
-    .chevron-down {
-      transition: transform 0.2s ease;
-    }
+to {
+transform: translateY(0);
+}
+}
 
-    .verse-translation-details[open] .chevron-down {
-      transform: rotate(180deg);
-    }
+.animate-slide-up {
+animation: slide-up 0.3s ease-out;
+}
 
-    .mute-button {
-      padding: 8px;
-      border-radius: 8px;
-      background-color: #f2f2f7;
-      transition: background-color 0.2s ease;
-      margin-left: 12px;
-    }
+/* Safe Area Insets */
+@supports (padding: max(0px)) {
+.bottom-nav {
+padding-bottom: max(12px, env(safe-area-inset-bottom));
+bottom: max(12px, env(safe-area-inset-bottom));
+}
 
-    .mute-button:hover {
-      background-color: #e0e0e0;
-    }
+.app-container {
+padding-bottom: max(120px, calc(120px + env(safe-area-inset-bottom)));
+}
+}
 
-    .search-results-container {
-      max-width: 600px;
-      /* Set the max-width to match the home screen */
-      margin: 0 auto;
-      /* Center the container */
-      padding-bottom: 0px;
-      /* Add padding to avoid overlap with bottom navigation */
-    }
+/* Bottom Nav Styles */
+.bottom-nav {
+display: flex;
+justify-content: space-around;
+align-items: center;
+padding: 12px 18px;
+background-color: var(--bottom-nav-bg);
+border-radius: 20px;
+position: fixed;
+bottom: 16px;
+left: 50%;
+transform: translateX(-50%);
+width: calc(100% - 32px);
+max-width: 568px;
+margin: 0 auto;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+z-index: 1000;
+}
 
-    form.gsc-search-box,
-    .gsc-results-wrapper-visible > .gsc-positioningWrapper,
-    .gcsc-more-maybe-branding-root {
-      display: none !important;
-    }
+.nav-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+color: var(--inactive-icon);
+cursor: pointer;
+transition: color 0.2s ease;
+font-size: 12px;
+font-weight: 500;
+position: relative;
+/* For absolute positioning of the active indicator */
+padding-top: 10px;
+/* Add some padding to the top */
+}
 
-    .gsc-control-cse {
-      padding-top: 5px !important;
-    }
+.nav-item .nav-icon {
+margin-bottom: 5px;
+position: relative;
+/* For absolute positioning of the icon */
+z-index: 1;
+/* Ensure the icon is above the circle */
+}
 
-    /* Qibla Screen Styles */
-    .qibla-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+.nav-item .nav-label {
+font-size: 12px;
+}
 
-    .compass {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      margin: auto;
-    }
+/* Style for the active indicator */
+.nav-item::before {
+content: '';
+position: absolute;
+top: 5px;
+/* Adjust the position of the indicator */
+left: 50%;
+transform: translateX(-50%);
+width: 36px;
+/* Increased width for the circle */
+height: 36px;
+/* Increased height for the circle */
+background-color: transparent;
+/* Initially transparent */
+border-radius: 50%;
+/* Make it a circle */
+transition: background-color 0.2s ease;
+}
 
-    .compass > .arrow {
-      position: absolute;
-      width: 0;
-      height: 0;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-style: solid;
-      border-width: 30px 20px 0 20px;
-      border-color: red transparent transparent transparent;
-      z-index: 1;
-    }
+/* Show the indicator only for the active item */
+.nav-item.active::before {
+background-color: var(--accent-color);
+/* Color of the circle background */
+}
 
-    .compass > .compass-circle,
-    .compass > .my-point {
-      position: absolute;
-      width: 90%;
-      height: 90%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease-out;
-      background: url(https://purepng.com/public/uploads/large/purepng.com-compasscompassinstrumentnavigationcardinal-directionspointsdiagram-1701527842316onq7x.png)
-        center no-repeat;
-      background-size: contain;
-    }
+/* Change icon color in active state */
+.nav-item.active .nav-icon {
+color: white;
+/* White color for the active icon */
+}
 
-    .compass > .my-point {
-      opacity: 0;
-      width: 20%;
-      height: 20%;
-      background: rgb(8, 223, 69);
-      border-radius: 50%;
-      transition: opacity 0.5s ease-out;
-    }
+/* Quran Screen Styles */
+.quran-screen {
+padding: 16px;
+}
 
-    .start-btn {
-      margin-bottom: auto;
-    }
+.quran-screen-header {
+margin-bottom: 16px;
+}
 
-    /* Hijri Calendar Styles */
-    .hijri-calendar-screen {
-      background-color: #f9f9f9;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
+.search-bar {
+display: flex;
+align-items: center;
+background-color: #f2f2f7;
+border-radius: 10px;
+padding: 8px 12px;
+margin-top: 8px;
+}
 
-    .hijri-calendar-screen .grid-cols-7 {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-    }
+.search-bar input {
+background: transparent;
+border: none;
+color: #333;
+width: 100%;
+font-size: 16px;
+margin-left: 8px;
+outline: none;
+}
 
-    .hijri-calendar-screen .w-full .w-full button {
-      padding: 0.75rem;
-      border-radius: 0.75rem;
-      transition: background-color 0.2s ease;
-			flex: 1;
-    }
+.search-icon {
+opacity: 0.7;
+color: #007aff;
+}
 
-    .hijri-calendar-screen .w-full .w-full button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+.surah-list {
+list-style: none;
+padding: 0;
+}
 
-    .hijri-calendar-screen .w-full .w-full button:hover:not(:disabled) {
-      background-color: #e0e0e0;
-    }
+.surah-item {
+padding: 0;
+margin-bottom: 12px;
+}
 
-    .hijri-calendar-screen .text-center {
-      text-align: center;
-    }
+.surah-card {
+background-color: #fff;
+border-radius: 12px;
+padding: 16px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+transition: transform 0.2s ease;
+cursor: pointer;
+position: relative;
+}
 
-    .hijri-calendar-screen .text-gray-500 {
-      color: #718096;
-    }
+.surah-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-    .hijri-calendar-screen .bg-blue-100 {
-      background-color: #bae6ff;
-    }
+.surah-info {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+margin-bottom: 8px;
+}
 
-    .hijri-calendar-screen .text-blue-800 {
-      color: #2b6cb0;
-    }
+.surah-name-arabic {
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 4px;
+}
+
+.surah-name-latin {
+font-size: 14px;
+color: #555;
+}
+
+.surah-details {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+color: #777;
+font-size: 13px;
+}
+
+.surah-details-item {
+margin-left: 12px;
+}
+
+.surah-category {
+padding: 4px 8px;
+border-radius: 8px;
+font-size: 12px;
+font-weight: 500;
+}
+
+.makkiyah {
+background-color: #f0fdf4;
+color: #16a34a;
+}
+
+.madaniyah {
+background-color: #fde68a;
+color: #ca8a04;
+}
+
+.surah-details-top {
+position: absolute;
+top: 20px;
+right: 20px;
+font-size: 13px;
+color: #777;
+}
+
+/* Surah Detail Styles */
+.surah-detail {
+padding: 16px;
+padding-top: 70px;
+/* Adjust padding to accommodate the fixed header */
+}
+
+.surah-detail-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin: 0 auto;
+position: fixed;
+background-color: #fff;
+padding: 12px 16px;
+z-index: 100;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+border-bottom: 1px solid #eee;
+width: 100dvw;
+margin-left: calc(50% - 50dvw);
+top: 0;
+left: 0;
+overflow: hidden;
+}
+
+.back-button {
+padding: 8px;
+border-radius: 8px;
+background-color: #f2f2f7;
+transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+background-color: #e0e0e0;
+}
+
+.surah-info {
+text-align: center;
+}
+
+.surah-verses {
+margin-top: 16px;
+}
+
+.verse-item {
+margin-bottom: 24px;
+text-align: right;
+background-color: #f9f9f9;
+padding: 16px;
+border-radius: 12px;
+position: relative;
+}
+
+.verse-arabic {
+font-size: 28px;
+/* Increased font size */
+font-family: 'Scheherazade New', serif;
+/* Use a proper Arabic font */
+margin-bottom: 16px;
+/* Add margin bottom */
+}
+
+.verse-latin {
+font-size: 14px;
+color: #444;
+}
+
+.verse-actions-inline {
+display: flex;
+align-items: center;
+margin-top: 8px;
+/* Add margin to separate from verse text */
+}
+
+.play-button,
+.bookmark-button,
+.verse-translation-button {
+background-color: #f0f0f0;
+border-radius: 8px;
+padding: 6px 8px;
+/* Adjust padding for smaller buttons */
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.75rem;
+/* Smaller font size */
+margin-right: 4px;
+/* Add margin between buttons */
+}
+
+.verse-translation-details {
+margin-top: 15px;
+border: 1px solid #ddd;
+border-radius: 8px;
+overflow: hidden;
+transition: box-shadow 0.2s ease;
+}
+
+.verse-translation-details:hover {
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.verse-translation-summary {
+padding: 8px 12px;
+background-color: #f0f0f0;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-weight: 500;
+color: #333;
+transition: background-color 0.2s ease;
+font-size: 14px;
+}
+
+.verse-translation-summary:hover {
+background-color: #e0e0e0;
+}
+
+.verse-translation-summary:focus {
+outline: none;
+}
+
+.verse-translation-content {
+background: white;
+}
+
+.chevron-down {
+transition: transform 0.2s ease;
+}
+
+.verse-translation-details[open] .chevron-down {
+transform: rotate(180deg);
+}
+
+.mute-button {
+padding: 8px;
+border-radius: 8px;
+background-color: #f2f2f7;
+transition: background-color 0.2s ease;
+margin-left: 12px;
+}
+
+.mute-button:hover {
+background-color: #e0e0e0;
+}
+
+.search-results-container {
+max-width: 600px;
+/* Set the max-width to match the home screen */
+margin: 0 auto;
+/* Center the container */
+padding-bottom: 0px;
+/* Add padding to avoid overlap with bottom navigation */
+position: relative;
+}
+
+.gsc-search-button,
+.gsc-above-wrapper-area,
+.gsc-results-wrapper-visible > .gsc-positioningWrapper,
+.gcsc-more-maybe-branding-root {
+display: none !important;
+}
+
+table.gsc-search-box td.gsc-input {
+padding-right: 0 !important;
+}
+
+.gsc-control-cse {
+border: none !important;
+padding: 0 !important;
+background: transparent !important;
+}
+
+.gsc-webResult.gsc-result {
+margin: 10px 0 !important;
+border-radius: 10px;
+padding: 10px !important;
+border: none !important;
+}
+
+input.gsc-input {
+background: transparent !important;
+color: #333;
+font-size: 16px;
+}
+
+.gsc-input .gsc-input-box {
+border: none;
+display: flex;
+align-items: center;
+background-color: #f2f2f7;
+border-radius: 10px;
+padding: 4px 12px;
+margin-top: 8px;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0aec0'%3E%3Cpath fill-rule='evenodd' d='M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z' clip-rule='evenodd' /%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: 8px center;
+background-size: 24px;
+padding-left: 36px;
+}
+
+.gsc-results .gsc-cursor-box .gsc-cursor-page {
+border-radius: 16px;
+width: 16px;
+height: 16px;
+line-height: 16px;
+text-align: center;
+display: inline-block !important;
+font-size: 9px;
+color: #666 !important;
+}
+
+/* Qibla Screen Styles */
+.qibla-screen {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+}
+
+.compass {
+position: relative;
+width: 320px;
+height: 320px;
+border-radius: 50%;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+margin: auto;
+}
+
+.compass > .arrow {
+position: absolute;
+width: 0;
+height: 0;
+top: -20px;
+left: 50%;
+transform: translateX(-50%);
+border-style: solid;
+border-width: 30px 20px 0 20px;
+border-color: red transparent transparent transparent;
+z-index: 1;
+}
+
+.compass > .compass-circle,
+.compass > .my-point {
+position: absolute;
+width: 90%;
+height: 90%;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+transition: transform 0.1s ease-out;
+background: url(https://purepng.com/public/uploads/large/purepng.com-compasscompassinstrumentnavigationcardinal-directionspointsdiagram-1701527842316onq7x.png)
+center no-repeat;
+background-size: contain;
+}
+
+.compass > .my-point {
+opacity: 0;
+width: 20%;
+height: 20%;
+background: rgb(8, 223, 69);
+border-radius: 50%;
+transition: opacity 0.5s ease-out;
+}
+
+.start-btn {
+margin-bottom: auto;
+}
+
+/* Hijri Calendar Styles */
+.hijri-calendar-screen {
+background-color: #f9f9f9;
+border-radius: 12px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.hijri-calendar-screen .grid-cols-7 {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+}
+
+.hijri-calendar-screen .w-full .w-full button {
+padding: 0.75rem;
+border-radius: 0.75rem;
+transition: background-color 0.2s ease;
+flex: 1;
+}
+
+.hijri-calendar-screen .w-full .w-full button:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+.hijri-calendar-screen .w-full .w-full button:hover:not(:disabled) {
+background-color: #e0e0e0;
+}
+
+.hijri-calendar-screen .text-center {
+text-align: center;
+}
+
+.hijri-calendar-screen .text-gray-500 {
+color: #718096;
+}
+
+.hijri-calendar-screen .bg-blue-100 {
+background-color: #bae6ff;
+}
+
+.hijri-calendar-screen .text-blue-800 {
+color: #2b6cb0;
+}

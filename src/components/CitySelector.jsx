@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-    import { Search, X } from 'lucide-react';
+    import { Search, X, Locate } from 'lucide-react';
     import useStore from '../store/store';
 
     const popularCities = [
@@ -32,6 +32,33 @@ import React, { useState } from 'react';
         onClose();
       };
 
+      const handleGeolocation = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              // Geolocation success, use coordinates to set city (Jakarta fallback)
+              setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+              onClose();
+            },
+            (error) => {
+              // Geolocation error, fallback to Jakarta
+              console.error("Geolocation error:", error);
+              setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+              onClose();
+            },
+            {
+              enableHighAccuracy: false,
+              timeout: 5000,
+              maximumAge: 0,
+            }
+          );
+        } else {
+          // Geolocation not supported, fallback to Jakarta
+          setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+          onClose();
+        }
+      };
+
       if (!isOpen) return null;
 
       return (
@@ -57,6 +84,14 @@ import React, { useState } from 'react';
                 className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
               />
             </div>
+
+            <button
+              onClick={handleGeolocation}
+              className="flex items-center justify-center w-full py-3 mb-6 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+            >
+              <Locate size={20} className="mr-2" />
+              Gunakan Lokasi Saat Ini
+            </button>
 
             <div className="mb-6">
               <h3 className="text-sm font-medium text-gray-500 mb-3">Kota Populer</h3>
