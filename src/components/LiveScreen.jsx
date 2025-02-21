@@ -102,7 +102,7 @@ import React, { useState, useEffect, useRef } from 'react';
             <button onClick={handleBack} className="p-2 rounded-full hover:bg-gray-100">
               <ArrowLeft size={24} />
             </button>
-            <h2 className="text-2xl font-semibold text-center">Live TV Channels</h2>
+            <h2 className="text-lg font-semibold text-center">Live Dakwah</h2>
             <button onClick={handleReload} className="p-2 rounded-full hover:bg-gray-100">
               {isReloading ? (
                 <Loader className="animate-spin" size={20} />

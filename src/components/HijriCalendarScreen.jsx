@@ -27,8 +27,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
       const hijriMonthNames = [
         "Muharram", "Safar", "Rabi'ul Awal", "Rabi'ul Akhir",
-        "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban",
-        "Ramadan", "Shawwal", "Dhu al-Qidah", "Dhu al-Hijjah"
+				"Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban",
+				"Ramadan", "Syawal", "Dzulqadah", "Dzulhijjah"
       ];
 
       useEffect(() => {
@@ -140,7 +140,7 @@ import React, { useState, useEffect, useRef } from 'react';
         setHijriYear(newYear);
       };
 
-      const weekdayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+      const weekdayNames = ["Ahd", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
       const openSettings = () => {
         setIsSettingsOpen(true);
@@ -181,7 +181,7 @@ import React, { useState, useEffect, useRef } from 'react';
             <button onClick={handleBack} className="mr-4">
               <ChevronLeft size={24} />
             </button>
-            <h2 className="text-xl font-semibold">Kalender Hijriyah</h2>
+            <h2 className="text-lg font-semibold">Kalender Hijriyah</h2>
             <button onClick={openSettings} className="p-2 rounded-full hover:bg-gray-100">
               <Settings size={20} />
             </button>

@@ -102,14 +102,17 @@
       gap: 6px;
       font-size: 15px;
       background-color: theme('colors.ios-system-gray3');
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 8px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.2s ease;
+			width: 36px;
+			height: 36px;
     }
 
     .location:hover {
-      background-color: theme('colors.ios-system-gray2');
+      background-color: theme('colors.ios-system-gray2');			
+      transform: translateY(-2px);
     }
 
     .location-icon {
@@ -200,7 +203,7 @@
     .next-prayer {
       font-size: 15px;
       opacity: 0.9;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
     /* Date Selector Styles */
@@ -319,10 +322,10 @@
     }
 
     .action-icon-wrapper {
-      width: 44px;
-      height: 44px;
+      width: 36px;
+      height: 36px;
       background-color: theme('colors.ios-secondary-system');
-      border-radius: 12px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;

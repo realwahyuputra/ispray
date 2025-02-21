@@ -251,7 +251,7 @@ import React, { useState, useEffect, useRef } from 'react';
                         </>
                       ) : (
                         <>
-                          <Play size={12} /> Play
+                          <Play size={12} /> Putar
                         </>
                       )}
                     </button>
@@ -262,11 +262,11 @@ import React, { useState, useEffect, useRef } from 'react';
                       >
                         {isBookmarked ? (
                           <>
-                            <Bookmark size={12} color="#2563eb" fill="#2563eb" /> Bookmarked
+                            <Bookmark size={12} color="#2563eb" fill="#2563eb" /> Ditandai
                           </>
                         ) : (
                           <>
-                            <BookmarkPlus size={12} /> Bookmark
+                            <BookmarkPlus size={12} /> Tandai
                           </>
                         )}
                       </button>

@@ -53,10 +53,10 @@ import React, { useState, useEffect } from 'react';
               <button onClick={handleBack} className="mr-4">
                 <ChevronLeft size={24} />
               </button>
-              <h2 className="text-xl font-semibold">Bookmarked Ayahs</h2>
+              <h2 className="text-lg font-semibold">Ayat Ditandai</h2>
             </div>
             {bookmarkedVerses.length === 0 ? (
-              <p>No bookmarked ayahs yet.</p>
+              <p>Belum ada ayat yang ditandai.</p>
             ) : (
               <ul className="space-y-4">
                 {bookmarkedVerses.map((verse, index) => (
@@ -64,7 +64,7 @@ import React, { useState, useEffect } from 'react';
                     <p className="text-right text-xl">{verse.arabic}</p>
                     <p className="text-gray-600">{verse.latin}</p>
                     <p className="text-gray-800">{verse.translation?.id}</p>
-                    <p className="text-sm text-gray-500">Surah {verse.surahNameLatin} - Ayah {verse.verseNumber}</p>
+                    <p className="text-sm text-gray-500">Surat {verse.surahNameLatin} - Ayat {verse.verseNumber}</p>
                   </li>
                 ))}
               </ul>

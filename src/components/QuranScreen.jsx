@@ -53,7 +53,7 @@ import React, { useState, useEffect } from 'react';
                 <button onClick={handleBack} className="mr-4">
                   <ChevronLeft size={24} />
                 </button>
-                <h2 className="text-2xl font-semibold text-center">Daftar Surah</h2>
+                <h2 className="text-lg font-semibold text-center">Al Quran 30 Juz</h2>
                 <Link to="/bookmarked" className="mr-4">
                   <Bookmark size={24} />
                 </Link>
