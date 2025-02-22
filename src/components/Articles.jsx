@@ -83,6 +83,20 @@ import React, { useState, useEffect } from 'react';
         setSelectedArticle(null);
       };
 
+      const boldTextBetweenAsterisks = (text) => {
+        if (!text) return '';
+        const parts = text.split('*');
+        let result = '';
+        parts.forEach((part, index) => {
+          if (index % 2 === 1) {
+            result += `<b>${part}</b>`;
+          } else {
+            result += part;
+          }
+        });
+        return result;
+      };
+
       if (loading) {
         return (
           <div className="flex justify-center items-center p-6">
@@ -161,7 +175,7 @@ import React, { useState, useEffect } from 'react';
                     className="w-full h-auto mb-4"
                   />
                 )}
-                <div className="text-gray-700 mb-4" dangerouslySetInnerHTML={{ __html: selectedArticle.description }} />
+                <div className="text-gray-700 mb-4" dangerouslySetInnerHTML={{ __html: boldTextBetweenAsterisks(selectedArticle.description) }} />
                 {/* <div dangerouslySetInnerHTML={{ __html: selectedArticle.content }} /> */}
               </div>
             </div>

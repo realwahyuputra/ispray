@@ -18,7 +18,7 @@ const CitySelector = ({ isOpen, onClose }) => {
     setFilteredCities(filtered);
 
     if (query.length > 2) {
-      fetchAutocomplete(query);
+      //fetchAutocomplete(query); // Removed API call here
     } else {
       setAutocompleteResults([]);
     }
@@ -73,6 +73,12 @@ const CitySelector = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && searchQuery.length > 2) {
+      fetchAutocomplete(searchQuery);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -95,6 +101,7 @@ const CitySelector = ({ isOpen, onClose }) => {
             placeholder="Cari kota..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
+            onKeyDown={handleKeyDown} // Add onKeyDown event
             className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
           />
           {autocompleteResults.length > 0 && (
