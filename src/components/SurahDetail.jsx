@@ -110,7 +110,7 @@ import React, { useState, useEffect, useRef } from 'react';
       }, [location.search, loading, verses, surahNumber]);
 
       const handleBack = () => {
-        navigate('/quran');
+        navigate('/quran'); // Navigate to Quran screen
       };
 
       const handlePlayPause = (verseNumber) => {
