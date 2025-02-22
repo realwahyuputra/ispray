@@ -26,7 +26,7 @@ import React, { useState, useEffect, useRef } from 'react';
           // Directly use data as the channel list
           setChannels(data);
         } catch (err) {
-          setError('Failed to fetch live channels');
+          setError('Gagal memuat channel dakwah. Coba lagi!');
           console.error('Error fetching live channels:', err);
         } finally {
           setLoading(false);

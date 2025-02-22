@@ -600,7 +600,7 @@ const App = () => {
                         <div className="welcome-banner">
                           <ListOrdered size={22} className="mosque-icon" />
                           <span className="welcome-text">
-                            Terakhir dibaca: Surah {latestReadAyah.surahName}, Ayat {latestReadAyah.verseNumber}
+                            Lanjutkan Surat {latestReadAyah.surahName} : {latestReadAyah.verseNumber}
                           </span>
                         </div>
                       </Link>
@@ -621,10 +621,6 @@ const App = () => {
                       ))}
                     </div>
 
-                    <div className="welcome-banner">
-                      <div className="mosque-icon">🕌</div>
-                      <span className="welcome-text">Selamat datang di Aplikasi MPS</span>
-                    </div>
                     <Articles />
                   </div>
                 )}

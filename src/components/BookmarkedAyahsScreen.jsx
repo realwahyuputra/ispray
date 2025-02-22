@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
       import * as Quran from 'quran-pack';
-      import { useNavigate } from 'react-router-dom';
-      import { ChevronLeft } from 'lucide-react';
+      import { useNavigate, Link } from 'react-router-dom';
+      import { ChevronLeft, Bookmark } from 'lucide-react';
 
       const BookmarkedAyahsScreen = () => {
         const [bookmarkedVerses, setBookmarkedVerses] = useState([]);
@@ -49,11 +49,16 @@ import React, { useState, useEffect } from 'react';
 
         return (
           <div className="bookmarked-ayahs-screen p-4">
-            <div className="flex items-center justify-start mb-4">
-              <button onClick={handleBack} className="mr-4">
+            <div className="surah-detail-header">
+              <button onClick={handleBack} className="back-button">
                 <ChevronLeft size={24} />
               </button>
-              <h2 className="text-lg font-semibold">Ayat Ditandai</h2>
+              <div className="surah-info">
+                <h2 className="text-lg font-semibold">Ayat Ditandai</h2>
+              </div>
+              <Link to="/bookmarked" className="mr-4">
+                <Bookmark size={24} />
+              </Link>
             </div>
             {bookmarkedVerses.length === 0 ? (
               <p>Belum ada ayat yang ditandai.</p>
