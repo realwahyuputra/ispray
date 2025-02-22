@@ -18,7 +18,7 @@
 .header {
   color: theme('colors.ios-label');
   padding: 12px 16px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   border-bottom: 1px solid theme('colors.ios-separator');
   position: relative;
 }
@@ -217,7 +217,7 @@
   background-color: theme('colors.ios-secondary-system');
   padding: 12px;
   border-radius: 12px;
-  margin: 12px 0px;
+  margin: 12px 0px -36px;
   font-size: 15px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   color: theme('colors.ios-label');
