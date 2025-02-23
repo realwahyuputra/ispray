@@ -376,7 +376,7 @@
   color: theme('colors.ios-secondary-label');
   cursor: pointer;
   transition: color 0.2s ease;
-  padding: 6px 8px;
+  padding: 0px 8px;
   border-radius: 12px;
 }
 
@@ -387,6 +387,7 @@
 
 .nav-item.active {
   color: #aa6ab8;
+	top: -35px;
 }
 
 .nav-icon {

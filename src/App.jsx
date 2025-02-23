@@ -383,7 +383,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       const currentPrayer = getCurrentPrayerTime();
 
       const handleTabChange = (tab) => {
-        setActiveTab(tab);
+        // setActiveTab(tab);
       };
 
       const handleSetLatestReadAyah = (surahNumber, verseNumber) => {
@@ -654,9 +654,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
               {navItems.map((item, index) => (
                 <Link
                   to={item.tab === 'home' ? '/' : item.tab === 'qibla' ? '/qibla' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
-                  className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
+                  className={`nav-item ${'quran' === item.tab ? 'active' : ''}`}
                   key={index}
-                  // onClick={() => handleTabChange(item.tab)}
+                  onClick={() => handleTabChange(item.tab)}
                 >
                   <div className="nav-icon">
                     {item.icon}

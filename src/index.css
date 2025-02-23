@@ -58,7 +58,7 @@ padding-bottom: max(120px, calc(120px + env(safe-area-inset-bottom)));
 display: flex;
 justify-content: space-around;
 align-items: center;
-padding: 12px 18px;
+padding: 3px;
 background-color: var(--bottom-nav-bg);
 border-radius: 20px;
 position: fixed;
@@ -82,9 +82,6 @@ transition: color 0.2s ease;
 font-size: 12px;
 font-weight: 500;
 position: relative;
-/* For absolute positioning of the active indicator */
-padding-top: 10px;
-/* Add some padding to the top */
 }
 
 .nav-item .nav-icon {
@@ -98,6 +95,11 @@ z-index: 1;
 .nav-item .nav-label {
 font-size: 11px;
 font-family: "Poppins", serif;	
+}
+
+.nav-item.active .nav-label {
+top: 25px;
+position: relative;
 }
 
 /* Style for the active indicator */
@@ -121,14 +123,21 @@ transition: background-color 0.2s ease;
 
 /* Show the indicator only for the active item */
 .nav-item.active::before {
-background-color: var(--accent-color);
+background: linear-gradient(135deg, #a56ab8 0%,#7f69c6 100%);
 /* Color of the circle background */
+width: 72px;
+height: 72px;
+border: 6px solid #fff;	
 }
 
 /* Change icon color in active state */
 .nav-item.active .nav-icon {
 color: white;
 /* White color for the active icon */
+width: 48px;
+height: 48px;
+margin-bottom: 0;	
+top: 16px;	
 }
 
 /* Quran Screen Styles */
