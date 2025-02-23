@@ -19,6 +19,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       Compass, // Import Compass icon
       Calendar, // Import Calendar icon
       Video, // Import Video icon
+      X, // Import the X icon
+      ArrowLeft, // Import ArrowLeft for the back button
     } from 'lucide-react';
     import CitySelector from './components/CitySelector';
     import Articles from './components/Articles';
@@ -61,6 +63,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         const storedAyah = localStorage.getItem('latestReadAyah');
         return storedAyah ? JSON.parse(storedAyah) : null;
       });
+      const [isAzkarModalOpen, setIsAzkarModalOpen] = useState(false); // State for Azkar modal
 
       const { prayerTimes, loading, error, nextPrayer, setNextPrayer, refetch } = usePrayerTimes(
         selectedCity.name,
@@ -249,7 +252,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
       const quickActions = [
         { icon: 'book', label: 'Quran' },
-        { icon: 'book-open', label: 'Azkar' },
+        { icon: 'book-open', label: 'Azkar', action: () => setIsAzkarModalOpen(true) }, // Added action for Azkar
         { icon: 'circle' && <div className="tasbih-icon">📿</div> },
         { icon: 'compass' && <div className="qibla-icon">🧭</div> },
         { icon: 'grid' && <div className="grid-icon">➕</div> }
@@ -369,12 +372,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
         for (const prayer of prayerTimes.prayerTimes) {
           const [hours, minutes] = prayer.time.split(':');
-          const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
-          const timeDiff = now.getTime() - prayerTime.getTime();
-          const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+          const prayerMinutes = parseInt(hours) * 60 + parseInt(minutes);
 
-          if (minutesDiff >= 0 && minutesDiff <= 5) {
-            return prayer.name;
+          if (prayerMinutes > currentTime) {
+            return {
+              name: prayer.name,
+              time: prayer.time
+            };
           }
         }
         return null;
@@ -618,12 +622,27 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                         <div className="quick-actions">
                           {quickActions.map((action, index) => (
                             <div className="action-item" key={index}>
-                              <div className="action-icon-wrapper">
+                              <div className="action-icon-wrapper" onClick={action.action}>
                                 {action.icon === 'book' && <Bell size={24} />}
                                 {action.icon === 'book-open' && <Bell size={24} />}
                                 {action.icon === 'circle' && <div className="tasbih-icon">📿</div>}
                                 {action.icon === 'compass' && <div className="qibla-icon">🧭</div>}
                                 {action.icon === 'grid' && <div className="grid-icon">➕</div>}
+                                {action.label === 'Azkar' && isAzkarModalOpen && (
+                                  <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
+                                    <div className="bg-white w-full h-full">
+                                      <div className="surah-detail-header">
+                                        <button onClick={() => setIsAzkarModalOpen(false)} className="back-button">
+                                          <ArrowLeft size={24} />
+                                        </button>
+                                        <div className="surah-info">
+                                          <h2 className="text-lg font-semibold">Azkar</h2>
+                                        </div>
+                                      </div>
+                                      <iframe src="https://google.com" title="Azkar" className="w-full h-full border-0"></iframe>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <span className="action-label">{action.label}</span>
                             </div>
