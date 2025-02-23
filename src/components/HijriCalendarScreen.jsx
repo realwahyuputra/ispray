@@ -43,7 +43,12 @@ import React, { useState, useEffect, useRef } from 'react';
       }, [hijriMonth, hijriYear, hijriDateOffset]);
 
       const handleBack = () => {
-        navigate('/');
+        const homeMenu = document.querySelector('.nav-item[href="/"]');
+        if (homeMenu) {
+          homeMenu.click();
+        } else {
+          navigate('/');
+        }
       };
 
       const fetchHijriDate = async (gregorianDate) => {

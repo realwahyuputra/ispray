@@ -73,7 +73,12 @@ import React, { useState, useEffect, useRef } from 'react';
       };
 
       const handleBack = () => {
-        navigate('/'); // Navigate back to the home screen
+        const homeMenu = document.querySelector('.nav-item[href="/"]');
+        if (homeMenu) {
+          homeMenu.click();
+        } else {
+          navigate('/');
+        }
       };
 
       const handleReload = () => {

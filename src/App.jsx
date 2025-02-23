@@ -383,7 +383,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       const currentPrayer = getCurrentPrayerTime();
 
       const handleTabChange = (tab) => {
-        // setActiveTab(tab);
+        setActiveTab(tab);
       };
 
       const handleSetLatestReadAyah = (surahNumber, verseNumber) => {
@@ -403,9 +403,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       const scriptRef = useRef(null);
 
       useEffect(() => {
-        if (activeTab === 'home') {
+        let gcse;
+        const initializeGcse = () => {
           const cx = '010268028161000595287:r9cavnk7mvo';
-          const gcse = document.createElement('script');
+          gcse = document.createElement('script');
           gcse.type = 'text/javascript';
           gcse.async = true;
           gcse.src = `https://cse.google.com/cse.js?cx=${cx}`;
@@ -455,17 +456,21 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
           window.__gcse = {
             parsetags: 'explicit',
           };
+        };
 
-          return () => {
-            if (scriptRef.current && scriptRef.current.parentNode) {
-              scriptRef.current.parentNode.removeChild(scriptRef.current);
-              scriptRef.current = null;
-            }
-            if (searchResultsRef.current) {
-              searchResultsRef.current.innerHTML = '';
-            }
-          };
+        if (activeTab === 'home') {
+          initializeGcse();
         }
+
+        return () => {
+          if (scriptRef.current && scriptRef.current.parentNode) {
+            scriptRef.current.parentNode.removeChild(scriptRef.current);
+            scriptRef.current = null;
+          }
+          if (searchResultsRef.current) {
+            searchResultsRef.current.innerHTML = '';
+          }
+        };
       }, [activeTab, searchQuery]);
 
       useEffect(() => {
@@ -654,7 +659,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
               {navItems.map((item, index) => (
                 <Link
                   to={item.tab === 'home' ? '/' : item.tab === 'qibla' ? '/qibla' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
-                  className={`nav-item ${'quran' === item.tab ? 'active' : ''}`}
+                  className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
                   key={index}
                   onClick={() => handleTabChange(item.tab)}
                 >
