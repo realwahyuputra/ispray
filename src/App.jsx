@@ -21,6 +21,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       Video, // Import Video icon
       X, // Import the X icon
       ArrowLeft, // Import ArrowLeft for the back button
+      Globe, // Import Globe icon
     } from 'lucide-react';
     import CitySelector from './components/CitySelector';
     import Articles from './components/Articles';
@@ -30,6 +31,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import useStore from './store/store';
     import alarmSound from './assets/audio/alarm.mp3'; // Import the alarm sound
     import { formatPrayerTime } from './services/prayerTimeService';
+    import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
     import QuranScreen from './components/QuranScreen';
     import SurahDetail from './components/SurahDetail';
     import BookmarkedAyahsScreen from './components/BookmarkedAyahsScreen';
@@ -41,6 +43,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import { ToastContainer, toast } from 'react-toastify';
     import 'react-toastify/dist/ReactToastify.css';
     import LiveScreen from './components/LiveScreen'; // Import LiveScreen
+    import IframeScreen from './components/IframeScreen'; // Import IframeScreen
 
     const App = () => {
       const { selectedCity, setSelectedCity, prayerSettings, setPrayerSettings, timeFormat } = useStore();
@@ -62,7 +65,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         const storedAyah = localStorage.getItem('latestReadAyah');
         return storedAyah ? JSON.parse(storedAyah) : null;
       });
-      const [isAzkarModalOpen, setIsAzkarModalOpen] = useState(false); // State for Azkar modal
+      const [showMoreQuickActions, setShowMoreQuickActions] = useState(false); // State to show more quick actions
+      const [selectedIframeUrl, setSelectedIframeUrl] = useState(null); // State for selected iframe URL
+      const [iframeTitle, setIframeTitle] = useState(''); // State for iframe title
 
       const { prayerTimes, loading, error, nextPrayer, setNextPrayer, refetch } = usePrayerTimes(
         selectedCity.name,
@@ -250,12 +255,19 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       };
 
       const quickActions = [
-        { icon: 'book', label: 'Quran' },
-        { icon: 'book-open', label: 'Azkar', action: () => setIsAzkarModalOpen(true) }, // Added action for Azkar
-        { icon: 'circle' && <div className="tasbih-icon">📿</div> },
-        { icon: 'compass' && <div className="qibla-icon">🧭</div> },
-        { icon: 'grid' && <div className="grid-icon">➕</div> }
+        { icon: 'grid' && <div className="grid-icon">➕</div>, label: 'Menu 1', url: 'https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=Masjid&amp;ie=' },
+        { icon: 'globe', label: 'Menu 2', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 3', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 4', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 5', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 6', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 7', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 8', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 9', url: 'https://google.com' },
       ];
+
+      const visibleQuickActions = showMoreQuickActions ? quickActions : quickActions.slice(0, 5);
+      const showMoreButton = !showMoreQuickActions && quickActions.length > 5;
 
       const navItems = [
         { icon: <HomeIcon size={24} />, label: 'Home', tab: 'home' },
@@ -491,160 +503,184 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         }
       }, [activeTab]);
 
+      const handleQuickActionClick = (url, title) => {
+        setSelectedIframeUrl(url);
+        setIframeTitle(title); // Set the title
+      };
+
+      const handleCloseIframe = () => {
+        setSelectedIframeUrl(null);
+        setIframeTitle(''); // Clear the title
+      };
+
       return (
-        <>
-          {activeTab === 'home' && (
-            <div className="app-container">
-              <audio ref={audioRef} src={alarmSound} preload="auto" /> {/* Audio element */}
-              <div>
-                <div className="header">
-                  <div className="sky">
-                    <div className={`sky__phase sky__dawn ${skyPhase === 'dawn' ? 'active' : ''}`}></div>
-                    <div className={`sky__phase sky__noon ${skyPhase === 'noon' ? 'active' : ''}`}></div>
-                    <div className={`sky__phase sky__dusk ${skyPhase === 'dusk' ? 'active' : ''}`}></div>
-                    <div className={`sky__phase sky__midnight ${skyPhase === 'midnight' ? 'active' : ''}`}>
-                    </div>
-                  </div>
-                  <div className="top-bar">
-                    <img
-                      src="https://i.ibb.co.com/FLBhVTkG/logo-mps.png"
-                      alt="MPS Logo"
-                      className="h-8" // Adjust height as needed
-                    />
-                    <div className="actions">
-                      <button
-                        className="location"
-                        onClick={() => setIsCitySelectorOpen(true)}
-                      >
-                        <MapPin size={20} className="location-icon" />
-                      </button>
-                      <div className="action-icon-wrapper" onClick={openSettings}>
-                        <SettingsIcon size={20} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={`current-prayer ${skyPhase === 'dawn' || skyPhase === 'noon' ? 'text-black' : 'text-white'}`}>
-                    {loading ? (
-                      <div className="flex items-center justify-center p-8">
-                        <Loader className="animate-spin" size={30} />
-                      </div>
-                    ) : nextPrayer && (
-                      <>
-                        <div className="prayer-name">
-                          {currentPrayer === 'Sunrise' ? 'Waktu Terlarang Shalat' : nextPrayer.name}
-                        </div>
-                        <div className="prayer-time">
-                          {formatPrayerTime(nextPrayer.time, timeFormat)}
-                        </div>
-                        {nextPrayer.name === 'Sunrise' || nextPrayer.name === 'Terbit' ? (
-                          <div className="next-prayer">
-                            Matahari terbit dalam {timeRemaining}
-                          </div>
-                        ) : (
-                          timeRemaining !== null && (
-                            <div className="next-prayer">
-                              {nextPrayer.name} {timeRemaining} lagi
+        <Router>
+          <div className="app-container">
+            <audio ref={audioRef} src={alarmSound} preload="auto" /> {/* Audio element */}
+            <div>
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    {activeTab === 'home' && (
+                      <div>
+                        <div className="header">
+                          <div className="sky">
+                            <div className={`sky__phase sky__dawn ${skyPhase === 'dawn' ? 'active' : ''}`}></div>
+                            <div className={`sky__phase sky__noon ${skyPhase === 'noon' ? 'active' : ''}`}></div>
+                            <div className={`sky__phase sky__dusk ${skyPhase === 'dusk' ? 'active' : ''}`}></div>
+                            <div className={`sky__phase sky__midnight ${skyPhase === 'midnight' ? 'active' : ''}`}>
                             </div>
-                          )
-                        )}
-                      </>
-                    )}
-                  </div>
-
-                  {/* Inline Search Results */}
-                  <div className="search-results-container">
-                    <div ref={searchResultsRef}>
-                    </div>
-                  </div>
-
-                  <div className="date-selector">
-                    <ChevronLeft size={24} className="arrow" onClick={goToPreviousDay} style={{ cursor: 'pointer' }} />
-                    <span className="date">{hijriDate ? hijriDate : 'Loading...'}</span>
-                    <ChevronRight size={24} className="arrow" onClick={goToNextDay} style={{ cursor: 'pointer' }} />
-                  </div>
-                </div>
-
-                <div className="prayer-list">
-                  {loading ? (
-                    <div className="flex items-center justify-center p-8">
-                      <Loader className="animate-spin" size={30} />
-                    </div>
-                  ) : (
-                    prayerTimes?.prayerTimes.map((prayer, index) => {
-                      const dateKey = currentDate.toDateString();
-                      const isChecked = (prayerCheckboxes[dateKey] && prayerCheckboxes[dateKey][prayer.name]) || false;
-                      const isSunrise = prayer.name === 'Sunrise';
-
-                      return (
-                        <div className="prayer-item" key={index}>
-                          <div className="prayer-info">
-                            <span className="prayer-icon">{getPrayerIcon(prayer.icon)}</span>
-                            <span className="prayer-name">{prayer.name}</span>
-                            {prayer.bell && <Bell size={16} className="bell-icon" />}
                           </div>
-                          <div className="prayer-time">{formatPrayerTime(prayer.time, timeFormat)}</div>
-                          <div className="checkbox">
-                            <input
-                              type="checkbox"
-                              className="custom-checkbox"
-                              checked={isChecked}
-                              onChange={(e) => handleCheckboxChange(prayer.name, e.target.checked)}
-                              disabled={isSunrise}
-                              style={{ opacity: isSunrise ? 0.5 : 1, cursor: isSunrise ? 'not-allowed' : 'pointer', border: isSunrise ? 'none' : '1px solid #ccc' }}
+                          <div className="top-bar">
+                            <img
+                              src="https://i.ibb.co.com/FLBhVTkG/logo-mps.png"
+                              alt="MPS Logo"
+                              className="h-8" // Adjust height as needed
                             />
+                            <div className="actions">
+                              <button
+                                className="location"
+                                onClick={() => setIsCitySelectorOpen(true)}
+                              >
+                                <MapPin size={20} className="location-icon" />
+                              </button>
+                              <div className="action-icon-wrapper" onClick={openSettings}>
+                                <SettingsIcon size={20} />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className={`current-prayer ${skyPhase === 'dawn' || skyPhase === 'noon' ? 'text-black' : 'text-white'}`}>
+                            {loading ? (
+                              <div className="flex items-center justify-center p-8">
+                                <Loader className="animate-spin" size={30} />
+                              </div>
+                            ) : nextPrayer && (
+                              <>
+                                <div className="prayer-name">
+                                  {currentPrayer === 'Sunrise' ? 'Waktu Terlarang Shalat' : nextPrayer.name}
+                                </div>
+                                <div className="prayer-time">
+                                  {formatPrayerTime(nextPrayer.time, timeFormat)}
+                                </div>
+                                {nextPrayer.name === 'Sunrise' || nextPrayer.name === 'Terbit' ? (
+                                  <div className="next-prayer">
+                                    Matahari terbit dalam {timeRemaining}
+                                  </div>
+                                ) : (
+                                  timeRemaining !== null && (
+                                    <div className="next-prayer">
+                                      {nextPrayer.name} {timeRemaining} lagi
+                                    </div>
+                                  )
+                                )}
+                              </>
+                            )}
+                          </div>
+
+                          {/* Inline Search Results */}
+                          <div className="search-results-container">
+                            <div ref={searchResultsRef}>
+                            </div>
+                          </div>
+
+                          <div className="date-selector">
+                            <ChevronLeft size={24} className="arrow" onClick={goToPreviousDay} style={{ cursor: 'pointer' }} />
+                            <Link to="/hijri">
+                              <span className="date">{hijriDate ? hijriDate : 'Loading...'}</span>
+                            </Link>
+                            <ChevronRight size={24} className="arrow" onClick={goToNextDay} style={{ cursor: 'pointer' }} />
                           </div>
                         </div>
-                      );
-                    })
-                  )}
-                </div>
 
-                {latestReadAyah && latestReadAyah.surahNumber && ( // Conditionally render the banner
-                  <div className="welcome-banner">
-                    <ListOrdered size={22} className="mosque-icon" />
-                    <span className="welcome-text">
-                      Lanjutkan Surat {latestReadAyah.surahName} : {latestReadAyah.verseNumber}
-                    </span>
-                  </div>
-                )}
+                        <div className="prayer-list">
+                          {loading ? (
+                            <div className="flex items-center justify-center p-8">
+                              <Loader className="animate-spin" size={30} />
+                            </div>
+                          ) : (
+                            prayerTimes?.prayerTimes.map((prayer, index) => {
+                              const dateKey = currentDate.toDateString();
+                              const isChecked = (prayerCheckboxes[dateKey] && prayerCheckboxes[dateKey][prayer.name]) || false;
+                              const isSunrise = prayer.name === 'Sunrise';
 
-                <div className="quick-actions">
-                  {quickActions.map((action, index) => (
-                    <div className="action-item" key={index}>
-                      <div className="action-icon-wrapper" onClick={action.action}>
-                        {action.icon === 'book' && <Bell size={24} />}
-                        {action.icon === 'book-open' && (
-                          <>
-                            <Bell size={24} />
-                            {isAzkarModalOpen && (
-                              <div className="fixed inset-0 bg-black bg-opacity-50 z-[10000]">
-                                <div className="bg-white w-full h-full">
-                                  <div className="surah-detail-header">
-                                    <button onClick={() => setIsAzkarModalOpen(false)} className="back-button">
-                                      <ArrowLeft size={24} />
-                                    </button>
-                                    <div className="surah-info">
-                                      <h2 className="text-lg font-semibold text-center">Azkar</h2>
-                                    </div>
+                              return (
+                                <div className="prayer-item" key={index}>
+                                  <div className="prayer-info">
+                                    <span className="prayer-icon">{getPrayerIcon(prayer.icon)}</span>
+                                    <span className="prayer-name">{prayer.name}</span>
+                                    {prayer.bell && <Bell size={16} className="bell-icon" />}
                                   </div>
-                                  <iframe src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=Masjid&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" title="Azkar" className="w-full h-full border-0"></iframe>
+                                  <div className="prayer-time">{formatPrayerTime(prayer.time, timeFormat)}</div>
+                                  <div className="checkbox">
+                                    <input
+                                      type="checkbox"
+                                      className="custom-checkbox"
+                                      checked={isChecked}
+                                      onChange={(e) => handleCheckboxChange(prayer.name, e.target.checked)}
+                                      disabled={isSunrise}
+                                      style={{ opacity: isSunrise ? 0.5 : 1, cursor: isSunrise ? 'not-allowed' : 'pointer', border: isSunrise ? 'none' : '1px solid #ccc' }}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                          </>
-                        )}
-                        {action.icon === 'circle' && <div className="tasbih-icon">📿</div>}
-                        {action.icon === 'compass' && <div className="qibla-icon">🧭</div>}
-                        {action.icon === 'grid' && <div className="grid-icon">➕</div>}
-                      </div>
-                      <span className="action-label">{action.label}</span>
-                    </div>
-                  ))}
-                </div>
+                              );
+                            })
+                          )}
+                        </div>
 
-                <Articles />
-              </div>
+                        {latestReadAyah && latestReadAyah.surahNumber && ( // Conditionally render the banner
+                          <Link to={`/quran/${latestReadAyah.surahNumber}?verse=${latestReadAyah.verseNumber}`} className="latest-read-ayah">
+                            <div className="welcome-banner">
+                              <ListOrdered size={22} className="mosque-icon" />
+                              <span className="welcome-text">
+                                Lanjutkan Surat {latestReadAyah.surahName} : {latestReadAyah.verseNumber}
+                              </span>
+                            </div>
+                          </Link>
+                        )}
+
+                        {/* Quick Action Menu */}
+                        <div className="quick-actions-menu grid grid-cols-3 gap-4 px-4 py-2">
+                          {visibleQuickActions.map((item, index) => (
+                            <Link
+                              key={index}
+                              to={item.url ? `/iframe?url=${encodeURIComponent(item.url)}` : '#'}
+                              className="action-item"
+                              onClick={() => handleQuickActionClick(item.url, item.label)}
+                            >
+                              <div className="nav-icon">
+                                {item.icon === 'globe' ? <Globe size={24} /> : item.icon}
+                              </div>
+                              <span className="action-label">{item.label}</span>
+                            </Link>
+                          ))}
+                          {showMoreButton && (
+                            <button
+                              className="action-item"
+                              onClick={() => setShowMoreQuickActions(true)}
+                            >
+                              <div className="nav-icon">
+                                <Globe size={24} />
+                              </div>
+                              <span className="action-label">Lainnya</span>
+                            </button>
+                          )}
+                        </div>
+
+                        <Articles />
+                      </div>
+                    )}
+                  </>
+                } />
+                <Route path="/quran" element={<QuranScreen />} />
+                <Route path="/quran/:surahNumber" element={<SurahDetail setLatestReadAyah={handleSetLatestReadAyah} />} />
+                <Route path="/bookmarked" element={<BookmarkedAyahsScreen />} />
+                <Route path="/qibla" element={<QiblaScreen />} /> {/* Add QiblaScreen route */}
+                <Route path="/hijri" element={<HijriCalendarScreen />} />
+                <Route path="/live" element={<LiveScreen />} /> {/* Add LiveScreen route */}
+                <Route path="/iframe" element={<IframeScreen url={selectedIframeUrl} onClose={handleCloseIframe} title={iframeTitle} />} /> {/* Add IframeScreen route */}
+              </Routes>
+
               <CitySelector
                 isOpen={isCitySelectorOpen}
                 onClose={() => setIsCitySelectorOpen(false)}
@@ -657,28 +693,23 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
               />
               <ToastContainer />
             </div>
-          )}
-          {/* Render other screens based on activeTab */}
-          {activeTab === 'qibla' && <QiblaScreen />}
-          {activeTab === 'quran' && <QuranScreen />}
-          {activeTab === 'live' && <LiveScreen />}
-          {activeTab === 'hijri' && <HijriCalendarScreen />}
-          {activeTab === 'bookmarked' && <BookmarkedAyahsScreen />}
-          <nav className="bottom-nav">
-            {navItems.map((item, index) => (
-              <div
-                className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
-                key={index}
-                onClick={() => handleTabChange(item.tab)}
-              >
-                <div className="nav-icon">
-                  {item.icon}
-                </div>
-                <span className="nav-label">{item.label}</span>
-              </div>
-            ))}
-          </nav>
-        </>
+            <nav className="bottom-nav">
+              {navItems.map((item, index) => (
+                <Link
+                  to={item.tab === 'home' ? '/' : item.tab === 'qibla' ? '/qibla' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
+                  className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
+                  key={index}
+                  onClick={() => handleTabChange(item.tab)}
+                >
+                  <div className="nav-icon">
+                    {item.icon}
+                  </div>
+                  <span className="nav-label">{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </Router>
       );
     };
 
