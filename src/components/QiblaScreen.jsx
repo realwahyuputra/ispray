@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-    import { Loader } from 'lucide-react';
+    import { Loader, ArrowLeft } from 'lucide-react';
+    import { useNavigate } from 'react-router-dom';
 
     const QiblaScreen = () => {
       const [loading, setLoading] = useState(true);
@@ -9,6 +10,7 @@ import React, { useState, useEffect, useRef } from 'react';
       const isIOS =
         navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
         navigator.userAgent.match(/AppleWebKit/);
+      const navigate = useNavigate();
 
       useEffect(() => {
         const startBtn = document.querySelector(".start-btn");
@@ -101,15 +103,33 @@ import React, { useState, useEffect, useRef } from 'react';
         };
       }, []);
 
+      const handleBack = () => {
+        const homeMenu = document.querySelector('.nav-item[href="/"]');
+        if (homeMenu) {
+          homeMenu.click();
+        } else {
+          navigate('/');
+        }
+      };
+
       return (
         <div className="qibla-screen flex flex-col items-center justify-center h-full">
+          <div className="surah-detail-header" style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: '#fff', zIndex: 1000, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eee' }}>
+            <button onClick={handleBack} className="back-button">
+              <ArrowLeft size={24} />
+            </button>
+            <div className="surah-info">
+              <h2 className="text-lg font-semibold text-center">Arah Kiblat</h2>
+            </div>
+            <div></div>
+          </div>
           {loading ? (
-            <div className="flex items-center justify-center p-6">
+            <div className="flex items-center justify-center p-6" style={{ marginTop: '100px' }}>
               <Loader className="animate-spin" size={30} />
             </div>
           ) : (
             <>
-              <div className="compass relative w-80 h-80">
+              <div className="compass relative w-80 h-80" style={{ marginTop: '65px' }}>
                 <div className="arrow"></div>
                 <div className="compass-circle" ref={compassCircle}></div>
                 <div className="my-point" ref={myPoint}></div>

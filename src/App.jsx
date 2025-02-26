@@ -255,7 +255,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       };
 
       const quickActions = [
-        { icon: 'grid' && <div className="grid-icon">➕</div>, label: 'Menu 1', url: 'https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=Masjid&amp;ie=' },
+        { icon: 'grid' && <div className="grid-icon">➕</div>, label: 'Menu 1', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 2', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 3', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 4', url: 'https://google.com' },
@@ -264,6 +264,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         { icon: 'globe', label: 'Menu 7', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 8', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 9', url: 'https://google.com' },
+        { icon: 'globe', label: 'Menu 10', url: 'https://google.com' },
       ];
 
       const visibleQuickActions = showMoreQuickActions ? quickActions : quickActions.slice(0, 5);
@@ -376,22 +377,40 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       };
 
       const getCurrentPrayerTime = () => {
-        if (!prayerTimes || !nextPrayer) return null;
+        if (!prayerTimes) return null;
 
         const now = new Date();
         const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-        for (const prayer of prayerTimes.prayerTimes) {
-          const [hours, minutes] = prayer.time.split(':');
-          const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
-          const timeDiff = now.getTime() - prayerTime.getTime();
-          const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+        const prayerTranslations = {
+          Fajr: 'Subuh',
+          Sunrise: 'Terbit',
+          Dhuhr: 'Dzuhur',
+          Asr: 'Ashar',
+          Maghrib: 'Magrib',
+          Isha: 'Isya'
+        };
 
-          if (minutesDiff >= 0 && minutesDiff <= 5) {
-            return prayer.name;
+        let currentPrayerName = null;
+        for (let i = 0; i < prayerTimes.prayerTimes.length; i++) {
+          const prayer = prayerTimes.prayerTimes[i];
+          const prayerTime = prayer.time;
+          const [hours, minutes] = prayerTime.split(':');
+          const prayerTimeInMinutes = parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+          const nowTime = now.getHours() * 60 + now.getMinutes();
+
+          if (prayerTimeInMinutes <= nowTime) {
+            currentPrayerName = prayer.name;
+          } else {
+            break; // Stop when we find a prayer time in the future
           }
         }
-        return null;
+
+        if (!currentPrayerName) {
+          currentPrayerName = prayerTimes.prayerTimes[0].name; // Default to Fajr if before any prayer
+        }
+
+        return prayerTranslations[currentPrayerName] || currentPrayerName;
       };
 
       const currentPrayer = getCurrentPrayerTime();
@@ -475,17 +494,64 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         if (activeTab === 'home') {
           initializeGcse();
         }
-
-        return () => {
-          if (scriptRef.current && scriptRef.current.parentNode) {
-            scriptRef.current.parentNode.removeChild(scriptRef.current);
-            scriptRef.current = null;
-          }
-          if (searchResultsRef.current) {
-            searchResultsRef.current.innerHTML = '';
-          }
-        };
       }, [activeTab, searchQuery]);
+
+      useEffect(() => {
+        // Re-initialize CSE when navigating back to the home tab
+        if (activeTab === 'home') {
+          let gcse;
+          const initializeGcse = () => {
+            const cx = '010268028161000595287:r9cavnk7mvo';
+            gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = `https://cse.google.com/cse.js?cx=${cx}`;
+
+            scriptRef.current = gcse;
+
+            const s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+
+            gcse.onload = () => {
+              const renderSearch = () => {
+                if (window.google && window.google.search) {
+                  // Explicitly render the search box and results
+                  const searchBoxElement = document.createElement('gcse:searchbox');
+                  searchBoxElement.setAttribute('data-resultsUrl', '/');
+                  searchBoxElement.setAttribute('data-newWindow', 'false');
+                  searchBoxElement.setAttribute('data-queryParameterName', 'q');
+                  const searchResultsElement = document.createElement('gcse:searchresults');
+                  searchResultsElement.setAttribute('data-resultsUrl', '/');
+                  searchResultsElement.setAttribute('data-newWindow', 'false');
+                  searchResultsElement.setAttribute('data-queryParameterName', 'q');
+
+                  if (searchResultsRef.current) {
+                    searchResultsRef.current.innerHTML = ''; // Clear previous content
+                    searchResultsRef.current.appendChild(searchBoxElement);
+                    searchResultsRef.current.appendChild(searchResultsElement);
+                  }
+
+                  window.google.search.cse.element.go('search', 'searchresults-only', {
+                    gname: 'search'
+                  });
+
+                  // Set the search query if there is one
+                  if (searchQuery) {
+                    const searchBox = document.querySelector(".gsc-input");
+                    if (searchBox) {
+                      searchBox.value = searchQuery;
+                    }
+                  }
+                } else {
+                  setTimeout(renderSearch, 500);
+                }
+              };
+              renderSearch();
+            };
+            initializeGcse();
+          };
+        }
+      }, [activeTab]);
 
       useEffect(() => {
         const setPlaceholder = () => {
@@ -506,11 +572,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       const handleQuickActionClick = (url, title) => {
         setSelectedIframeUrl(url);
         setIframeTitle(title); // Set the title
+        setActiveTab(null); // Set active tab to null when opening iframe
       };
 
       const handleCloseIframe = () => {
         setSelectedIframeUrl(null);
         setIframeTitle(''); // Clear the title
+        setActiveTab('home'); // Set active tab back to home when closing iframe
       };
 
       return (
@@ -603,13 +671,27 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                               const dateKey = currentDate.toDateString();
                               const isChecked = (prayerCheckboxes[dateKey] && prayerCheckboxes[dateKey][prayer.name]) || false;
                               const isSunrise = prayer.name === 'Sunrise';
+                              const isCurrentPrayer = prayer.name === currentPrayer;
+
+                              const prayerTranslations = {
+                                Fajr: 'Subuh',
+                                Sunrise: 'Terbit',
+                                Dhuhr: 'Dzuhur',
+                                Asr: 'Ashar',
+                                Maghrib: 'Magrib',
+                                Isha: 'Isya'
+                              };
+
+                              const translatedPrayerName = prayerTranslations[prayer.name] || prayer.name;
 
                               return (
                                 <div className="prayer-item" key={index}>
                                   <div className="prayer-info">
                                     <span className="prayer-icon">{getPrayerIcon(prayer.icon)}</span>
-                                    <span className="prayer-name">{prayer.name}</span>
-                                    {prayer.bell && <Bell size={16} className="bell-icon" />}
+                                    <span className="prayer-name">{translatedPrayerName}</span>
+                                    {isCurrentPrayer && (
+                                      <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse ml-1"></span>
+                                    )}
                                   </div>
                                   <div className="prayer-time">{formatPrayerTime(prayer.time, timeFormat)}</div>
                                   <div className="checkbox">
