@@ -114,17 +114,17 @@ import React, { useState, useEffect, useRef } from 'react';
 
       return (
         <div className="qibla-screen flex flex-col items-center justify-center h-full">
-          <div className="surah-detail-header" style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: '#fff', zIndex: 1000, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eee' }}>
+          <div className="surah-detail-header" style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: '#fff', zIndex: 1000, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eee', margin: 0 }}>
             <button onClick={handleBack} className="back-button">
               <ArrowLeft size={24} />
             </button>
             <div className="surah-info">
               <h2 className="text-lg font-semibold text-center">Arah Kiblat</h2>
             </div>
-            <div></div>
+            <div style={{ width: '40px' }}></div>
           </div>
           {loading ? (
-            <div className="flex items-center justify-center p-6" style={{ marginTop: '100px' }}>
+            <div className="flex items-center justify-center p-6">
               <Loader className="animate-spin" size={30} />
             </div>
           ) : (

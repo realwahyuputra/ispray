@@ -27,7 +27,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import Articles from './components/Articles';
     import { usePrayerTimes } from './hooks/usePrayerTimes';
     import Settings from './components/Settings';
-    import './App.css';
     import useStore from './store/store';
     import alarmSound from './assets/audio/alarm.mp3'; // Import the alarm sound
     import { formatPrayerTime } from './services/prayerTimeService';
@@ -255,7 +254,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       };
 
       const quickActions = [
-        { icon: 'grid' && <div className="grid-icon">➕</div>, label: 'Menu 1', url: 'https://google.com' },
+        { icon: 'grid' && <div className="grid-icon">➕</div>, label: 'Menu 1', url: 'https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d15857.920832661363!2d106.735602!3d-6.4606811!3m2!1i1024!2i768!4f13.1!2m1!1smasjid!5e0!3m2!1sen!2sid!4v1740656512298!5m2!1sen!2sid' },
         { icon: 'globe', label: 'Menu 2', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 3', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 4', url: 'https://google.com' },
@@ -264,7 +263,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         { icon: 'globe', label: 'Menu 7', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 8', url: 'https://google.com' },
         { icon: 'globe', label: 'Menu 9', url: 'https://google.com' },
-        { icon: 'globe', label: 'Menu 10', url: 'https://google.com' },
       ];
 
       const visibleQuickActions = showMoreQuickActions ? quickActions : quickActions.slice(0, 5);
