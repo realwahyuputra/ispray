@@ -50,15 +50,13 @@ import React, { useState, useEffect, useRef } from 'react';
 
           // ±15 degree
           if (myPoint.current && pointDegree) {
-            if (
-              (pointDegree < Math.abs(compass) &&
-                pointDegree + 15 > Math.abs(compass)) ||
-              pointDegree > Math.abs(compass + 15) ||
-              pointDegree < Math.abs(compass)
-            ) {
-              myPoint.current.style.opacity = 0;
-            } else if (pointDegree) {
+            const diff = Math.abs(pointDegree - Math.abs(compass));
+            const normalizedDiff = Math.min(diff, 360 - diff); // Handle wrap-around
+
+            if (normalizedDiff <= 15) {
               myPoint.current.style.opacity = 1;
+            } else {
+              myPoint.current.style.opacity = 0;
             }
           }
         }

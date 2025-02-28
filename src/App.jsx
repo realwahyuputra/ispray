@@ -374,44 +374,33 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         setPrayerCheckboxes({});
       };
 
-      const getCurrentPrayerTime = () => {
+      const getCurrentPrayer = () => {
         if (!prayerTimes) return null;
 
         const now = new Date();
         const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-        const prayerTranslations = {
-          Fajr: 'Subuh',
-          Sunrise: 'Terbit',
-          Dhuhr: 'Dzuhur',
-          Asr: 'Ashar',
-          Maghrib: 'Magrib',
-          Isha: 'Isya'
-        };
-
-        let currentPrayerName = null;
         for (let i = 0; i < prayerTimes.prayerTimes.length; i++) {
           const prayer = prayerTimes.prayerTimes[i];
-          const prayerTime = prayer.time;
-          const [hours, minutes] = prayerTime.split(':');
-          const prayerTimeInMinutes = parseInt(hours, 10) * 60 + parseInt(minutes, 10);
-          const nowTime = now.getHours() * 60 + now.getMinutes();
-
-          if (prayerTimeInMinutes <= nowTime) {
-            currentPrayerName = prayer.name;
-          } else {
-            break; // Stop when we find a prayer time in the future
+          if (prayer.time >= currentTime) {
+            return {
+              name: prayer.name,
+              time: prayer.time,
+              index: i
+            };
           }
         }
 
-        if (!currentPrayerName) {
-          currentPrayerName = prayerTimes.prayerTimes[0].name; // Default to Fajr if before any prayer
-        }
-
-        return prayerTranslations[currentPrayerName] || currentPrayerName;
+        // If no prayer time is in the future, return the first prayer of the day
+        return {
+          name: prayerTimes.prayerTimes[0].name,
+          time: prayerTimes.prayerTimes[0].time,
+          index: 0
+        };
       };
 
-      const currentPrayer = getCurrentPrayerTime();
+      const currentPrayerData = getCurrentPrayer();
+      const currentPrayer = currentPrayerData?.name;
 
       const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -669,7 +658,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                               const dateKey = currentDate.toDateString();
                               const isChecked = (prayerCheckboxes[dateKey] && prayerCheckboxes[dateKey][prayer.name]) || false;
                               const isSunrise = prayer.name === 'Sunrise';
-                              const isCurrentPrayer = prayer.name === currentPrayer;
+                              const isCurrentPrayer = currentPrayerData?.index === index + 1;
 
                               const prayerTranslations = {
                                 Fajr: 'Subuh',
