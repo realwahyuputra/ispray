@@ -132,7 +132,7 @@ import React, { useState, useEffect, useRef } from 'react';
               <div className="compass relative w-80 h-80" style={{ marginTop: '85px' }}>
                 <div className="arrow"></div>
                 <div className="compass-circle" ref={compassCircle}></div>
-                <div className="my-point" ref={myPoint} style={{ opacity: pointDegree !== null && Math.abs(pointDegree - compassDegree) <= 15 ? 1 : 0 }}></div>
+                <div className="my-point" ref={myPoint} style={{ opacity: pointDegree !== null && Math.abs(pointDegree - compassDegree) <= 5 ? 1 : 0 }}></div>
               </div>
               <div className="mt-4 text-center">
                 <p className="text-lg font-semibold">Arah Kiblat: <span className="text-2xl">{pointDegree}°</span></p>
