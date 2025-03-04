@@ -55,7 +55,7 @@ import React, { useState, useEffect, useRef } from 'react';
             const diff = Math.abs(pointDegree - compass); // Use compass directly
             const normalizedDiff = Math.min(diff, 360 - diff); // Handle wrap-around
 
-            if (normalizedDiff <= 15) {
+            if (normalizedDiff <= 5) {
               myPoint.current.style.opacity = 1;
             } else {
               myPoint.current.style.opacity = 0;

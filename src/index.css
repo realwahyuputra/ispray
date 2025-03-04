@@ -947,8 +947,7 @@ input.gsc-input::placeholder {
   z-index: 1;
 }
 
-.compass > .compass-circle,
-.compass > .my-point {
+.compass > .compass-circle {
   position: absolute;
   width: 90%;
   height: 90%;
@@ -962,10 +961,18 @@ input.gsc-input::placeholder {
 }
 
 .compass > .my-point {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0;
   width: 20%;
   height: 20%;
-  background: rgb(8, 223, 69);
+	background-color: #000;
+	background-image: url(https://i.ibb.co.com/qYYgxDvy/icon-kaaba.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 50%;
   border-radius: 50%;
   transition: opacity 0.5s ease-out;
 }
