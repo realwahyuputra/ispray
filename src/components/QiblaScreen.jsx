@@ -132,11 +132,11 @@ import React, { useState, useEffect, useRef } from 'react';
               <div className="compass relative w-80 h-80" style={{ marginTop: '85px' }}>
                 <div className="arrow"></div>
                 <div className="compass-circle" ref={compassCircle}></div>
-                <div className="my-point" ref={myPoint}></div>
+                <div className="my-point" ref={myPoint} style={{ opacity: pointDegree !== null && Math.abs(pointDegree - compassDegree) <= 15 ? 1 : 0 }}></div>
               </div>
               <div className="mt-4 text-center">
-                <p>Arah Kiblat: {pointDegree}°</p>
-                <p>Posisi Kompas: {Math.round(compassDegree)}°</p>
+                <p className="text-lg font-semibold">Arah Kiblat: <span className="text-2xl">{pointDegree}°</span></p>
+                <p className="text-sm text-gray-500">Posisi Kompas: {Math.round(compassDegree)}°</p>
               </div>
               {/* <button className="start-btn">Start compass</button> */}
             </>
