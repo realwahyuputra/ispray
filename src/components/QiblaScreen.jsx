@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-    import { Loader, ArrowLeft } from 'lucide-react';
+    import { Loader, ArrowLeft, ChevronLeft } from 'lucide-react'; // Import all used icons
     import { useNavigate } from 'react-router-dom';
 
     const QiblaScreen = () => {
       const [loading, setLoading] = useState(true);
       const [pointDegree, setPointDegree] = useState(null);
+      const [compassDegree, setCompassDegree] = useState(0); // State for compass degree
       const compassCircle = useRef(null);
       const myPoint = useRef(null);
       const isIOS =
@@ -44,6 +45,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
         function handler(e) {
           let compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+          setCompassDegree(compass); // Update compass degree
           if (compassCircle.current) {
             compassCircle.current.style.transform = `translate(-50%, -50%) rotate(${-compass}deg)`;
           }
@@ -114,7 +116,7 @@ import React, { useState, useEffect, useRef } from 'react';
         <div className="qibla-screen flex flex-col items-center justify-center h-full">
           <div className="surah-detail-header" style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: '#fff', zIndex: 1000, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eee', margin: 0 }}>
             <button onClick={handleBack} className="back-button">
-              <ArrowLeft size={24} />
+              <ChevronLeft size={24} />
             </button>
             <div className="surah-info">
               <h2 className="text-lg font-semibold text-center">Arah Kiblat</h2>
@@ -131,6 +133,10 @@ import React, { useState, useEffect, useRef } from 'react';
                 <div className="arrow"></div>
                 <div className="compass-circle" ref={compassCircle}></div>
                 <div className="my-point" ref={myPoint}></div>
+              </div>
+              <div className="mt-4 text-center">
+                <p>Arah Kiblat: {pointDegree}°</p>
+                <p>Posisi Kompas: {Math.round(compassDegree)}°</p>
               </div>
               {/* <button className="start-btn">Start compass</button> */}
             </>
