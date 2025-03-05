@@ -41,7 +41,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import QiblaScreen from './components/QiblaScreen'; // Import QiblaScreen
     import HijriCalendarScreen from './components/HijriCalendarScreen'; // Import HijriCalendarScreen
     import uq from '@umalqura/core';
-    import { LiveScreen } from './components/LiveScreen'; // Import LiveScreen
+    import LiveScreen from './components/LiveScreen'; // Import LiveScreen
     import IframeScreen from './components/IframeScreen'; // Import IframeScreen
 
     const App = () => {
