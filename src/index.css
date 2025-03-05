@@ -241,6 +241,19 @@ body {
   z-index: 10;
 }
 
+.current-city {
+	position: relative;
+  font-size: 14px;
+	margin-bottom: 10px;
+	background: rgba(0, 0, 0, .2);
+	display: inline-block;
+	border-radius: 18px;
+	padding: 4px 10px;
+	color: #fff;
+	z-index: 99;
+	cursor: pointer;
+}
+
 .prayer-name {
   font-size: 16px;
   font-weight: 600;

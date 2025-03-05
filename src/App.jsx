@@ -31,6 +31,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import alarmSound from './assets/audio/alarm.mp3'; // Import the alarm sound
     import { formatPrayerTime } from './services/prayerTimeService';
     import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+    import { ToastContainer, toast } from 'react-toastify';
+    import 'react-toastify/dist/ReactToastify.css';
     import QuranScreen from './components/QuranScreen';
     import SurahDetail from './components/SurahDetail';
     import BookmarkedAyahsScreen from './components/BookmarkedAyahsScreen';
@@ -39,9 +41,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import QiblaScreen from './components/QiblaScreen'; // Import QiblaScreen
     import HijriCalendarScreen from './components/HijriCalendarScreen'; // Import HijriCalendarScreen
     import uq from '@umalqura/core';
-    import { ToastContainer, toast } from 'react-toastify';
-    import 'react-toastify/dist/ReactToastify.css';
-    import LiveScreen from './components/LiveScreen'; // Import LiveScreen
+    import { LiveScreen } from './components/LiveScreen'; // Import LiveScreen
     import IframeScreen from './components/IframeScreen'; // Import IframeScreen
 
     const App = () => {
@@ -568,6 +568,33 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
         setActiveTab('home'); // Set active tab back to home when closing iframe
       };
 
+      // Function to update location on home tab activation
+      useEffect(() => {
+        if (activeTab === 'home') {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                // Geolocation success, update city
+                setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+              },
+              (error) => {
+                // Geolocation error, fallback to Jakarta
+                console.error("Geolocation error:", error);
+                setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+              },
+              {
+                enableHighAccuracy: false,
+                timeout: 5000,
+                maximumAge: 0,
+              }
+            );
+          } else {
+            // Geolocation not supported, fallback to Jakarta
+            setSelectedCity({ name: 'Jakarta', country: 'Indonesia' });
+          }
+        }
+      }, [activeTab, setSelectedCity]);
+
       return (
         <Router>
           <div className="app-container">
@@ -593,12 +620,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                               className="h-8" // Adjust height as needed
                             />
                             <div className="actions">
-                              <button
-                                className="location"
-                                onClick={() => setIsCitySelectorOpen(true)}
-                              >
-                                <MapPin size={20} className="location-icon" />
-                              </button>
+                              <Link to="/qibla" className="action-icon-wrapper" onClick={() => setActiveTab('qibla')}>
+                                <Compass size={20} />
+                              </Link>
                               <div className="action-icon-wrapper" onClick={openSettings}>
                                 <SettingsIcon size={20} />
                               </div>
@@ -612,8 +636,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                               </div>
                             ) : nextPrayer && (
                               <>
-                                <div className="prayer-name">
-                                  {currentPrayer === 'Sunrise' ? 'Waktu Terlarang Shalat' : nextPrayer.name}
+                                <div className="current-city" onClick={() => setIsCitySelectorOpen(true)}>
+                                  <MapPin size={16} className="inline mr-1" /> {selectedCity.name}, {selectedCity.country}
                                 </div>
                                 <div className="prayer-time">
                                   {formatPrayerTime(nextPrayer.time, timeFormat)}
