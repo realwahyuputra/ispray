@@ -22,6 +22,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
       X, // Import the X icon
       ArrowLeft, // Import ArrowLeft for the back button
       Globe, // Import Globe icon
+      Hand, // Import Hand icon
     } from 'lucide-react';
     import CitySelector from './components/CitySelector';
     import Articles from './components/Articles';
@@ -43,6 +44,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
     import uq from '@umalqura/core';
     import LiveScreen from './components/LiveScreen'; // Import LiveScreen
     import IframeScreen from './components/IframeScreen'; // Import IframeScreen
+    import AzkarScreen from './components/AzkarScreen'; // Import AzkarScreen
 
     const App = () => {
       const { selectedCity, setSelectedCity, prayerSettings, setPrayerSettings, timeFormat } = useStore();
@@ -270,7 +272,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
       const navItems = [
         { icon: <HomeIcon size={24} />, label: 'Home', tab: 'home' },
-        { icon: <Compass size={24} />, label: 'Kiblat', tab: 'qibla' }, // Replaced Market with Qibla and Compass icon
+        { icon: <Hand size={24} />, label: 'Azkar', tab: 'azkar' }, // Replaced Compass with Hand and changed label
         { icon: <Book size={24} />, label: 'Quran', tab: 'quran' }, // Add Quran tab
         { icon: <Video size={24} />, label: 'Live', tab: 'live' }, // Replaced Assets with Live and Video icon
         { icon: <Calendar size={24} />, label: 'Hijri', tab: 'hijri' } // Add Hijri tab
@@ -615,7 +617,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                           </div>
                           <div className="top-bar">
                             <img
-                              src="https://i.ibb.co.com/FLBhVTkG/logo-mps.png"
+                              src="https://i.ibb.co.com/qYcvT7ZJ/logo-mps-icon.png"
                               alt="MPS Logo"
                               className="h-8" // Adjust height as needed
                             />
@@ -626,6 +628,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                               <div className="action-icon-wrapper" onClick={openSettings}>
                                 <SettingsIcon size={20} />
                               </div>
+                            </div>
+                          </div>
+
+                          {/* Inline Search Results */}
+                          <div className="search-results-container">
+                            <div ref={searchResultsRef}>
                             </div>
                           </div>
 
@@ -655,12 +663,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                                 )}
                               </>
                             )}
-                          </div>
-
-                          {/* Inline Search Results */}
-                          <div className="search-results-container">
-                            <div ref={searchResultsRef}>
-                            </div>
                           </div>
 
                           <div className="date-selector">
@@ -772,6 +774,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                 <Route path="/hijri" element={<HijriCalendarScreen />} />
                 <Route path="/live" element={<LiveScreen />} /> {/* Add LiveScreen route */}
                 <Route path="/iframe" element={<IframeScreen url={selectedIframeUrl} onClose={handleCloseIframe} title={iframeTitle} />} /> {/* Add IframeScreen route */}
+                <Route path="/azkar" element={<AzkarScreen />} /> {/* Add AzkarScreen route */}
               </Routes>
 
               <CitySelector
@@ -789,7 +792,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
             <nav className="bottom-nav">
               {navItems.map((item, index) => (
                 <Link
-                  to={item.tab === 'home' ? '/' : item.tab === 'qibla' ? '/qibla' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
+                  to={item.tab === 'home' ? '/' : item.tab === 'azkar' ? '/azkar' : item.tab === 'quran' ? '/quran' : item.tab === 'live' ? '/live' : item.tab === 'hijri' ? '/hijri' : '/bookmarked'} // Update routes
                   className={`nav-item ${activeTab === item.tab ? 'active' : ''}`}
                   key={index}
                   onClick={() => handleTabChange(item.tab)}
