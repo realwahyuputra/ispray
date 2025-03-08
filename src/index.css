@@ -105,6 +105,17 @@ body {
   opacity: 1;
 }
 
+.sky__phase.active:after {
+    content: "";
+    background-image: url(https://www.transparenttextures.com/patterns/asfalt-dark.png);
+    background-size: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .sky__dawn {
   background: linear-gradient(
     0deg,
@@ -146,6 +157,7 @@ body {
   position: absolute;
   z-index: 10;
 	width: calc(100% - 32px);
+	min-height: 36px;
 }
 
 .location {
@@ -235,17 +247,30 @@ body {
 
 /* Current Prayer Styles */
 .current-prayer {
-  text-align: center;
-  margin: 20px 0px 24px;
-  padding: 5px 20px;
+  text-align: left;
+  margin: 12px 0px 8px;
+  padding: 15px 0px;
   position: relative;
   z-index: 10;
+}
+
+.current-prayer:before {
+    content: "";
+    background: url(https://i.ibb.co.com/XxcythX1/masjid-icon.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 215px;
+    height: 215px;
+    position: absolute;
+    right: 0;
+    bottom: -60px;
+    z-index: -1;
 }
 
 .current-city {
 	position: relative;
   font-size: 14px;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 	background: rgba(0, 0, 0, .2);
 	display: inline-block;
 	border-radius: 18px;
@@ -262,9 +287,10 @@ body {
 }
 
 .prayer-time {
-  font-size: 72px;
+  font-size: 42px;
   font-weight: bold;
-  line-height: 1;
+  line-height: 1.2;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, .8);
 }
 
 .prayer-time span {
@@ -914,8 +940,8 @@ input.gsc-input::placeholder {
   border-radius: 10px;
   padding: 1px 4px 3px;
   margin-top: 0px;
-	margin-left: 0px;
-	margin-right: 100px;
+	margin-left: 50px;
+	margin-right: 50px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0aec0'%3E%3Cpath fill-rule='evenodd' d='M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z' clip-rule='evenodd' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: calc(100% - 10px) center;

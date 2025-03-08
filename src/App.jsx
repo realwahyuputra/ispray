@@ -616,15 +616,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                             </div>
                           </div>
                           <div className="top-bar">
-                            <img
-                              src="https://i.ibb.co.com/qYcvT7ZJ/logo-mps-icon.png"
-                              alt="MPS Logo"
-                              className="h-8" // Adjust height as needed
-                            />
-                            <div className="actions">
+                            <div className="top-bar-left">
                               <Link to="/qibla" className="action-icon-wrapper" onClick={() => setActiveTab('qibla')}>
                                 <Compass size={20} />
                               </Link>
+                            </div>
+                            <div className="actions">
                               <div className="action-icon-wrapper" onClick={openSettings}>
                                 <SettingsIcon size={20} />
                               </div>
@@ -648,7 +645,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                                   <MapPin size={16} className="inline mr-1" /> {selectedCity.name}, {selectedCity.country}
                                 </div>
                                 <div className="prayer-time">
-                                  {formatPrayerTime(nextPrayer.time, timeFormat)}
+                                  {nextPrayer.name} {formatPrayerTime(nextPrayer.time, timeFormat)}
                                 </div>
                                 {nextPrayer.name === 'Sunrise' || nextPrayer.name === 'Terbit' ? (
                                   <div className="next-prayer">
@@ -657,7 +654,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
                                 ) : (
                                   timeRemaining !== null && (
                                     <div className="next-prayer">
-                                      {nextPrayer.name} {timeRemaining} lagi
+                                      {timeRemaining} lagi
                                     </div>
                                   )
                                 )}
